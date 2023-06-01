@@ -1,18 +1,21 @@
 <h2>Eventos</h2>
 <hr>
 
-<form action="" class="form-inline">
+<div class="form-inline">
   <div class="form-group mb-2">
-    <input type="text" class="form-control mr-2" placeholder="buscar">
-    <button class="btn btn-outline-success">Buscar</button>
+    <input [(ngModel)]="filtroLista" type="text" class="form-control mr-2" placeholder="buscar">
   </div>
-</form>
+</div>
 
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>
       <th>#</th>
-      <th>Image</th>
+      <th>
+        <button (click)="alterarExibicaoImagens()" class="btn btn-outline-light btn-sm">
+          {{ !ocultarImagens ? "Ocultar" : "Mostrar"}}
+        </button>
+      </th>
       <th>Tema</th>
       <th>Local</th>
       <th>Data</th>
@@ -22,13 +25,15 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let evento of eventos">
+    <tr *ngFor="let evento of eventosFiltrados">
       <td>{{evento.eventoId}}</td>
       <td>
         <img
+          [isAnimated]="true"
+          [collapse]="ocultarImagens"
+          [style.width.px]="larguraImagem"
+          [style.margin.px]="marginImagem"
           src="/assets/{{evento.imagemURL}}"
-          [style.width.px]="widthImg"
-          [style.margin.px]="marginImg"
         >
       </td>
       <td>{{evento.tema}}</td>
@@ -36,7 +41,10 @@
       <td>{{evento.data}}</td>
       <td>{{evento.qtdPessoas}}</td>
       <td>{{evento.lote}}</td>
-      <td></td>
+      <td>
+        <button class="btn btn-primary btn-sm mr-2">Editar</button>
+        <button class="btn btn-danger btn-sm">Excluir</button>
+      </td>
     </tr>
   </tbody>
   <tfoot *ngIf="!eventos.length">
