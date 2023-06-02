@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace ProEventos.Domain
+namespace ProEventos.Domain.Models
 {
     public class Evento
     {
-        public int EventoId { get; set; }
+        public int Id { get; set; }
         public string Local { get; set; }
         public DateTime? Data { get; set; }
         public string Tema { get; set; }

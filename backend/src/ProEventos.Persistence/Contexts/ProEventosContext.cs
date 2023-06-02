@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using ProEventos.Domain;
+using ProEventos.Domain.Models;
 
-namespace ProEventos.Persistence
+namespace ProEventos.Persistence.Contexts
 {
     public class ProEventosContext : DbContext
     {
