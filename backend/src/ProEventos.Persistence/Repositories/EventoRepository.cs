@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain.Models;
 using ProEventos.Domain.Interfaces.Repositories;
+using ProEventos.Persistence.Contexts;
 
 namespace ProEventos.Persistence.Repositories
 {
     public class EventoRepository : Repository<Evento>, IEventoRepository
     {
-        public EventoRepository(DbContext context) : base(context)
+        public EventoRepository(ProEventosContext context) : base(context)
         {
         }
 
