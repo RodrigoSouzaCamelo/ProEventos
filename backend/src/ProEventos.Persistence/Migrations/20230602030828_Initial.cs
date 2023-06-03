@@ -11,7 +11,7 @@ namespace ProEventos.Persistence.Migrations
                 name: "Eventos",
                 columns: table => new
                 {
-                    EventoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Local = table.Column<string>(type: "TEXT", nullable: true),
                     Data = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -23,7 +23,7 @@ namespace ProEventos.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Eventos", x => x.EventoId);
+                    table.PrimaryKey("PK_Eventos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,7 +63,7 @@ namespace ProEventos.Persistence.Migrations
                         name: "FK_Lotes_Eventos_EventoId",
                         column: x => x.EventoId,
                         principalTable: "Eventos",
-                        principalColumn: "EventoId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -81,7 +81,7 @@ namespace ProEventos.Persistence.Migrations
                         name: "FK_PalestrantesEventos_Eventos_EventoId",
                         column: x => x.EventoId,
                         principalTable: "Eventos",
-                        principalColumn: "EventoId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PalestrantesEventos_Palestrantes_PalestranteId",
@@ -109,7 +109,7 @@ namespace ProEventos.Persistence.Migrations
                         name: "FK_RedesSociais_Eventos_EventoId",
                         column: x => x.EventoId,
                         principalTable: "Eventos",
-                        principalColumn: "EventoId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_RedesSociais_Palestrantes_PalestranteId",
