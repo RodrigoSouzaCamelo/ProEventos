@@ -18,7 +18,7 @@ namespace ProEventos.Persistence.Repositories
         public async Task<Evento> GetEventoByIdAsync(int id, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
-                .Include(e => e.Lote)
+                .Include(e => e.Lotes)
                 .Include(e => e.RedesSociais);
 
             if(includePalestrantes) {
@@ -36,7 +36,7 @@ namespace ProEventos.Persistence.Repositories
         public async Task<IEnumerable<Evento>> GetAllEventosAsync(bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
-                .Include(e => e.Lote)
+                .Include(e => e.Lotes)
                 .Include(e => e.RedesSociais);
 
             if(includePalestrantes) {
@@ -53,7 +53,7 @@ namespace ProEventos.Persistence.Repositories
         public async Task<IEnumerable<Evento>> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
-                .Include(e => e.Lote)
+                .Include(e => e.Lotes)
                 .Include(e => e.RedesSociais);
 
             if(includePalestrantes) {
