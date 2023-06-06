@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ToastrModule } from 'ngx-toastr'
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -36,7 +37,13 @@ import { DateTimeFormatPipe } from './helpers/date-time-format.pipe';
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      progressBar: true
+    })
   ],
   providers: [EventoService],
   bootstrap: [AppComponent]
