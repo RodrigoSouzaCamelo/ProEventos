@@ -4,6 +4,7 @@ import { EventoService } from '../services/evento.service';
 import { Evento } from '../models/Evento';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-eventos',
@@ -35,11 +36,13 @@ export class EventosComponent implements OnInit {
   constructor(
     private eventoService: EventoService,
     private modalService: BsModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) { }
 
   public ngOnInit(): void {
     this.getEventos();
+    this.spinner.show();
   }
 
   public filtrarEventos(filtro: string): Evento[] {
@@ -53,13 +56,18 @@ export class EventosComponent implements OnInit {
 
   public getEventos(): void {
     this.eventoService.getEventos()
-      .subscribe(
-        (eventos: Evento[]) => {
+      .subscribe({
+        next: (eventos: Evento[]) => {
           this.eventos = eventos;
           this.eventosFiltrados = eventos;
         },
-        error => console.error(error)
-      );
+        error: (error: any) => {
+          this.spinner.hide();
+          this.toastr.error("Não foi possível carregar os eventos.", "Erro!");
+          console.error(error);
+        },
+        complete: () => this.spinner.hide()
+      });
   }
 
   openModal(template: TemplateRef<any>) {
