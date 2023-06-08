@@ -22,6 +22,7 @@ import { DateTimeFormatPipe } from './helpers/date-time-format.pipe';
 import { ContatosComponent } from './components/contatos/contatos.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { TituloComponent } from './shared/titulo/titulo.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { PerfilComponent } from './components/perfil/perfil.component';
     DateTimeFormatPipe,
     ContatosComponent,
     DashboardComponent,
-    PerfilComponent
+    PerfilComponent,
+    TituloComponent
   ],
   imports: [
     BrowserModule,
