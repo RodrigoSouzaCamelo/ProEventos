@@ -8,7 +8,7 @@ import { ContatosComponent } from './components/contatos/contatos.component';
 
 const routes: Routes = [
   { path: 'eventos', component: EventosComponent },
-  { path: 'dashbaord', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'palestrantes', component: PalestrantesComponent },
   { path: 'perfil', component: PerfilComponent },
   { path: 'contatos', component: ContatosComponent },
