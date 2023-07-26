@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -9,21 +9,29 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class EventoDetalheComponent implements OnInit {
 
   public form: FormGroup;
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
+
+  get f(): any {
+    return this.form.controls;
+  }
 
   ngOnInit(): void {
     this.validation();
   }
 
   private validation(): void {
-    this.form = new FormGroup({
-      tema: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      local: new FormControl('', Validators.required),
-      data: new FormControl('', Validators.required),
-      qtdPessoas: new FormControl('', [Validators.required, Validators.maxLength(120000)]),
-      telefone: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      imagemURL: new FormControl('', Validators.required),
+    this.form = this.fb.group({
+      tema: ['', [Validators.required, Validators.minLength(4)]],
+      local: ['', Validators.required],
+      data: ['', Validators.required],
+      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
+      telefone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      imagemURL: ['', Validators.required],
     });
+  }
+
+  public resetForm(): void {
+    this.form.reset();
   }
 }
