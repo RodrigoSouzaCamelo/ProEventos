@@ -21,7 +21,7 @@ export class EventoDetalheComponent implements OnInit {
 
   private validation(): void {
     this.form = this.fb.group({
-      tema: ['', [Validators.required, Validators.minLength(4)]],
+      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       local: ['', Validators.required],
       data: ['', Validators.required],
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
