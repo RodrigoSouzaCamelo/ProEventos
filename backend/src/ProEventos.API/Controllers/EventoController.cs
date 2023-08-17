@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using ProEventos.Application.DTOs;
+using ProEventos.Application.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProEventos.API.DTOs;
-using ProEventos.Application.Interfaces;
-using ProEventos.Domain.Models;
 
 namespace ProEventos.API.Controllers
 {
@@ -24,7 +23,7 @@ namespace ProEventos.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(typeof(IEnumerable<Evento>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<EventoDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             try
@@ -54,7 +53,7 @@ namespace ProEventos.API.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(Evento), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EventoDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetById(int id)
         {
@@ -74,7 +73,7 @@ namespace ProEventos.API.Controllers
 
         [HttpGet("tema/{tema}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(IEnumerable<Evento>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<EventoDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetByTema(string tema)
         {
@@ -93,9 +92,9 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Evento), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EventoDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create(Evento evento)
+        public async Task<IActionResult> Create(EventoDTO evento)
         {
             try
             {
@@ -109,9 +108,9 @@ namespace ProEventos.API.Controllers
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(Evento), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EventoDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(Evento evento)
+        public async Task<IActionResult> Update(EventoDTO evento)
         {
             try
             {
@@ -131,7 +130,7 @@ namespace ProEventos.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete(Evento evento)
+        public async Task<IActionResult> Delete(EventoDTO evento)
         {
             try
             {
