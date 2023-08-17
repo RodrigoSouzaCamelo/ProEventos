@@ -30,7 +30,7 @@ namespace ProEventos.API.Controllers
             {
                 var eventos = await eventoService.GetAllEventosAsync();
                 
-                if(eventos == null) return NotFound();
+                if(eventos == null) return NoContent();
 
                 var eventosRetorno = eventos.Select(evento => new EventoDTO() {
                     Id = evento.Id,
@@ -61,7 +61,7 @@ namespace ProEventos.API.Controllers
             {
                 var evento = await eventoService.GetEventoByIdAsync(id);
                 
-                if(evento == null) return NotFound("Evento não encontrado");
+                if(evento == null) return NoContent();
                 
                 return Ok(evento);                
             }
@@ -81,7 +81,7 @@ namespace ProEventos.API.Controllers
             {
                 var eventos = await eventoService.GetAllEventosByTemaAsync(tema);
                 
-                if(eventos == null) return NotFound("Evento não encontrado");
+                if(eventos == null) return NoContent();
                 
                 return Ok(eventos);                
             }
