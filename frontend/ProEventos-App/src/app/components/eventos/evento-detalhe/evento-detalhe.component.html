@@ -10,7 +10,7 @@
             class="form-control"
             formControlName="tema"
             placeholder="Insira o Tema"
-            [ngClass]="{'is-invalid' : f.tema!.errors && f.tema!.touched }"
+            [ngClass]="cssValidator(f.tema)"
           >
           <div class="invalid-feedback" *ngIf="f.tema!.hasError('required')">
             Tema é obrigatório.
@@ -29,7 +29,7 @@
           <input
             type="text"
             formControlName="local"
-            class="form-control" [ngClass]="{'is-invalid' : f.local!.errors && f.local!.touched}"
+            class="form-control" [ngClass]="cssValidator(f.local)"
             placeholder=""
           >
           <div class="invalid-feedback" *ngIf="f.local!.hasError('required')">
@@ -42,7 +42,7 @@
             type="datetime"
             class="form-control"
             formControlName="data"
-            [ngClass]="{'is-invalid' : f.data!.errors && f.data!.touched}"
+            [ngClass]="cssValidator(f.data)"
             placeholder=""
           >
           <div class="invalid-feedback" *ngIf="f.data!.hasError('required')">
@@ -57,7 +57,7 @@
             type="number"
             class="form-control"
             formControlName="qtdPessoas"
-            [ngClass]="{'is-invalid' : f.qtdPessoas!.errors && f.qtdPessoas!.touched}"
+            [ngClass]="cssValidator(f.qtdPessoas)"
             placeholder=""
           >
           <div class="invalid-feedback" *ngIf="f.qtdPessoas!.hasError('required')">
@@ -73,7 +73,7 @@
             type="text"
             class="form-control"
             formControlName="telefone"
-            [ngClass]="{'is-invalid' : f.telefone!.errors && f.telefone!.touched}"
+            [ngClass]="cssValidator(f.telefone)"
             placeholder="(000) 90000-0000"
           >
           <div class="invalid-feedback" *ngIf="f.telefone!.hasError('required')">
@@ -87,7 +87,7 @@
             class="form-control"
             placeholder="e-mail"
             formControlName="email"
-            [ngClass]="{'is-invalid' : f.email!.errors && f.email!.touched}"
+            [ngClass]="cssValidator(f.email)"
           >
           <div class="invalid-feedback" *ngIf="f.email!.hasError('required')">
             Email é obrigatório.
