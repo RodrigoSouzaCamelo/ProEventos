@@ -74,7 +74,8 @@ export class EventoListaComponent implements OnInit {
       });
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(event: PointerEvent | MouseEvent, template: TemplateRef<any>, eventoId: number) {
+    event.stopPropagation();
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 

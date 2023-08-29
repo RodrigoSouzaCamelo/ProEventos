@@ -54,7 +54,7 @@
         <td class="d-none d-md-table-cell">{{evento.qtdPessoas}}</td>
         <td class="d-none d-md-table-cell">{{getPrimeiroLote(evento.lotes)}}</td>
         <td>
-          <button class="btn btn-danger btn-lg" tooltip="Excluir" (click)="openModal(template)">
+          <button class="btn btn-danger btn-lg" tooltip="Excluir" (click)="openModal($event, template, evento.id)">
             <i class="fa fa-trash"></i>
           </button>
         </td>
