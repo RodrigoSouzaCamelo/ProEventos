@@ -52,7 +52,7 @@
         <td class="d-none d-md-table-cell">{{evento.local}}</td>
         <td>{{evento.data | dateTimeFormat}}</td>
         <td class="d-none d-md-table-cell">{{evento.qtdPessoas}}</td>
-        <td class="d-none d-md-table-cell">{{evento.lotes[0].nome}}</td>
+        <td class="d-none d-md-table-cell">{{getPrimeiroLote(evento.lotes)}}</td>
         <td>
           <button class="btn btn-danger btn-lg" tooltip="Excluir" (click)="openModal(template)">
             <i class="fa fa-trash"></i>

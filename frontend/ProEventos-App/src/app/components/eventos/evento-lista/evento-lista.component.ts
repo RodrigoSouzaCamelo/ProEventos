@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { Lote } from '@app/models/Lote';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -42,6 +43,10 @@ export class EventoListaComponent implements OnInit {
   public ngOnInit(): void {
     this.getEventos();
     this.spinner.show();
+  }
+
+  public getPrimeiroLote(lotes: Lote[]): string {
+    return lotes?.length > 0 ? lotes[0].nome : '';
   }
 
   public filtrarEventos(filtro: string): Evento[] {
