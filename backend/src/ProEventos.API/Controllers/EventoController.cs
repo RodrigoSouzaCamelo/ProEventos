@@ -126,15 +126,19 @@ namespace ProEventos.API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete(EventoDTO evento)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                if(await eventoService.Delete(evento)) return NotFound("Evento não encontrado");
+                var evento = await eventoService.GetEventoByIdAsync(id, true);
+                
+                if (evento == null) return NotFound();
+                
+                if(!await eventoService.Delete(evento)) return StatusCode(500);
                 
                 return NoContent();                
             }

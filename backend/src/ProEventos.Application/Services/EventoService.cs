@@ -107,7 +107,7 @@ namespace ProEventos.Application.Services
             {
                 var evento = _mapper.Map<Evento>(eventoDTO);
                 _eventoRepository.Delete(evento);
-                return !await _eventoRepository.SaveChangesAsync();
+                return await _eventoRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
