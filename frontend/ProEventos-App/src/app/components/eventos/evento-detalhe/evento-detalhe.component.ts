@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
@@ -19,10 +19,11 @@ export class EventoDetalheComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private localeService: BsLocaleService,
-    private router: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private eventoService: EventoService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private router: Router) {
     this.localeService.use('pt-br');
   }
 
@@ -46,7 +47,7 @@ export class EventoDetalheComponent implements OnInit {
   }
 
   public carregarEventos(): void {
-    const eventoIdParam = parseInt(this.router.snapshot.paramMap.get('id') ?? '0');
+    const eventoIdParam = parseInt(this.activatedRoute.snapshot.paramMap.get('id') ?? '0');
 
     if(eventoIdParam !== null && eventoIdParam > 0) {
       this.eventoService.getEventoById(eventoIdParam).subscribe({
@@ -68,6 +69,7 @@ export class EventoDetalheComponent implements OnInit {
 
   private validation(): void {
     this.form = this.fb.group({
+      id: [0],
       tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       local: ['', Validators.required],
       data: ['', Validators.required],
@@ -84,5 +86,51 @@ export class EventoDetalheComponent implements OnInit {
 
   public cssValidator(campoForm: FormControl): any {
     return { 'is-invalid': campoForm.errors && campoForm.touched };
+  }
+
+  public criarNovoEvento(): void {
+    this.evento = { ...this.form.value };
+      this.eventoService.post(this.evento).subscribe({
+        next: () => {
+          this.toastr.success('Evento salvo com sucesso.', 'Sucesso!');
+          this.irParaTelaDeListaDeEventos();
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.spinner.hide();
+          this.toastr.error('Não foi possível salvar o evento.', 'Erro');
+        },
+        complete: () => this.spinner.hide()
+      });
+  }
+
+  public irParaTelaDeListaDeEventos(): void {
+    this.router.navigate([`/eventos/lista`]);
+  }
+
+  public alterarEvento() {
+      this.eventoService.put(this.evento).subscribe({
+        next: () => {
+          this.toastr.success('Evento alterado com sucesso.', 'Sucesso!');
+          this.irParaTelaDeListaDeEventos();
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.spinner.hide();
+          this.toastr.error('Não foi possível alterar o evento.', 'Erro');
+        },
+        complete: () => this.spinner.hide()
+      });
+  }
+
+  public salvarAlteracoes(): void {
+    this.spinner.show();
+    this.evento = { ...this.form.value };
+
+    if(this.form.valid && this.evento.id === 0) {
+      this.criarNovoEvento();
+    } else if(this.form.valid && this.evento.id !== 0) {
+      this.alterarEvento();
+    }
   }
 }
