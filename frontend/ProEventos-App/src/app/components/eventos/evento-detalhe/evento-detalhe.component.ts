@@ -97,11 +97,9 @@ export class EventoDetalheComponent implements OnInit {
         },
         error: (error: any) => {
           console.error(error);
-          this.spinner.hide();
           this.toastr.error('Não foi possível salvar o evento.', 'Erro');
         },
-        complete: () => this.spinner.hide()
-      });
+      }).add(() => this.spinner.hide());
   }
 
   public irParaTelaDeListaDeEventos(): void {
@@ -116,11 +114,9 @@ export class EventoDetalheComponent implements OnInit {
         },
         error: (error: any) => {
           console.error(error);
-          this.spinner.hide();
           this.toastr.error('Não foi possível alterar o evento.', 'Erro');
-        },
-        complete: () => this.spinner.hide()
-      });
+        }
+      }).add(() => this.spinner.hide());
   }
 
   public salvarAlteracoes(): void {
