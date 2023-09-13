@@ -26,8 +26,12 @@ namespace ProEventos.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ILoteService, LoteService>();
             services.AddScoped<IEventoService, EventoService>();
+
+            services.AddScoped<ILoteRepository, LoteRepository>();
             services.AddScoped<IEventoRepository, EventoRepository>();
+
             services.AddDbContext<ProEventosContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
