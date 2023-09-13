@@ -1,4 +1,5 @@
 ﻿using ProEventos.Domain.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProEventos.Domain.Interfaces.Repositories
@@ -10,7 +11,7 @@ namespace ProEventos.Domain.Interfaces.Repositories
         /// </summary>
         /// <param name="eventoId">Código chave da tabela Evento</param>
         /// <returns>Array de Lotes</returns>
-        Task<Lote[]> GetLotesByEventoIdAsync(int eventoId);
+        Task<IEnumerable<Lote>> GetLotesByEventoIdAsync(int eventoId);
 
         /// <summary>
         /// Método get que retornará apenas 1 Lote

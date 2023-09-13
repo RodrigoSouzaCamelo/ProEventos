@@ -2,7 +2,7 @@
 using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Domain.Models;
 using ProEventos.Persistence.Contexts;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,10 +10,9 @@ namespace ProEventos.Persistence.Repositories
 {
     public class LoteRepository : Repository<Lote>, ILoteRepository
     {
-        protected LoteRepository(ProEventosContext context) : base(context)
+        public LoteRepository(ProEventosContext context) : base(context)
         {
         }
-
 
         public async Task<Lote> GetLoteByIdsAsync(int eventoId, int id)
         {
@@ -23,11 +22,11 @@ namespace ProEventos.Persistence.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Lote[]> GetLotesByEventoIdAsync(int eventoId)
+        public async Task<IEnumerable<Lote>> GetLotesByEventoIdAsync(int eventoId)
         {
             return await _context.Set<Lote>().AsNoTracking()
                 .Where(lote => lote.EventoId == eventoId)
-                .ToArrayAsync();
+                .ToListAsync();
         }
     }
 }

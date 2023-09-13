@@ -1,14 +1,15 @@
 ﻿using ProEventos.Application.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProEventos.Application.Interfaces
 {
     public interface ILoteService
     {
-        Task<LoteDTO[]> SaveLotes(int eventoId, LoteDTO[] models);
+        Task<IEnumerable<LoteDTO>> SaveLotes(int eventoId, IEnumerable<LoteDTO> models);
         Task<bool> DeleteLote(int eventoId, int loteId);
 
-        Task<LoteDTO[]> GetLotesByEventoIdAsync(int eventoId);
+        Task<IEnumerable<LoteDTO>> GetLotesByEventoIdAsync(int eventoId);
         Task<LoteDTO> GetLoteByIdsAsync(int eventoId, int loteId);
     }
 }

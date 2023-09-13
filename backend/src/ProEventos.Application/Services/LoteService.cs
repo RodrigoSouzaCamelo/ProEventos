@@ -4,6 +4,7 @@ using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<LoteDTO[]> SaveLotes(int eventoId, LoteDTO[] models)
+        public async Task<IEnumerable<LoteDTO>> SaveLotes(int eventoId, IEnumerable<LoteDTO> models)
         {
             try
             {
@@ -52,7 +53,7 @@ namespace ProEventos.Application.Services
 
                 var loteRetorno = await _loteRepository.GetLotesByEventoIdAsync(eventoId);
 
-                return _mapper.Map<LoteDTO[]>(loteRetorno);
+                return _mapper.Map<IEnumerable<LoteDTO>>(loteRetorno);
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        private async Task UpdateLote(int eventoId, Lote[] lotes, LoteDTO model)
+        private async Task UpdateLote(int eventoId, IEnumerable<Lote> lotes, LoteDTO model)
         {
             var lote = lotes.FirstOrDefault(lote => lote.Id == model.Id);
             model.EventoId = eventoId;
@@ -89,7 +90,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<LoteDTO[]> GetLotesByEventoIdAsync(int eventoId)
+        public async Task<IEnumerable<LoteDTO>> GetLotesByEventoIdAsync(int eventoId)
         {
             try
             {
