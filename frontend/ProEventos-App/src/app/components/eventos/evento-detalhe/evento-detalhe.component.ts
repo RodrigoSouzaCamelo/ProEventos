@@ -32,6 +32,11 @@ export class EventoDetalheComponent implements OnInit {
     return this.form.controls;
   }
 
+  public modoEditar(): boolean {
+    console.log(this.evento.id);
+    return this.evento.id !== 0 && this.evento.id !== undefined;
+  }
+
   get lotes(): FormArray {
     return this.form.get('lotes') as FormArray;
   }
