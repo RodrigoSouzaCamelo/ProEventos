@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Evento } from '@app/models/Evento';
 import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
+import { LoteService } from '@app/services/lote.service';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -24,7 +25,8 @@ export class EventoDetalheComponent implements OnInit {
     private eventoService: EventoService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private router: Router) {
+    private router: Router,
+    private loteService: LoteService) {
     this.localeService.use('pt-br');
   }
 
@@ -64,10 +66,13 @@ export class EventoDetalheComponent implements OnInit {
         next: (evento: Evento) => {
           this.evento = {...evento};
           this.form.patchValue(this.evento);
+          this.evento.lotes.forEach(lote => {
+            this.lotes.push(this.criarLote(lote));
+          })
         },
         error: (error: any) => {
           this.spinner.hide();
-          this.toastr.error('Erro ao tentar carregar evento.', 'Erro!')
+          this.toastr.error('Não foi possível carregar evento.', 'Erro!');
           console.error(error);
         },
         complete: () => {
@@ -153,6 +158,22 @@ export class EventoDetalheComponent implements OnInit {
       this.criarNovoEvento();
     } else if(this.form.valid && this.evento.id !== 0) {
       this.alterarEvento();
+    }
+  }
+
+  public salvarLotes(): void {
+    this.spinner.show();
+    if(this.form.controls.lotes.value) {
+      this.loteService.put(this.evento.id, this.form.value.lotes).subscribe(
+        () => {
+          this.toastr.success('Lotes salvos com sucesso!', 'Sucesso!');
+          this.lotes.reset();
+        },
+        (error: any) => {
+          this.toastr.error('Não foi possível salvar lotes.', 'Erro');
+          console.error(error);
+        }
+      ).add(() => this.spinner.hide());
     }
   }
 }
