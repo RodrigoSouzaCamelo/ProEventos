@@ -31,19 +31,8 @@ namespace ProEventos.API.Controllers
                 var eventos = await eventoService.GetAllEventosAsync();
                 
                 if(eventos == null) return NoContent();
-
-                var eventosRetorno = eventos.Select(evento => new EventoDTO() {
-                    Id = evento.Id,
-                    Local = evento.Local,
-                    Data = evento.Data.ToString(),
-                    Tema = evento.Tema,
-                    QtdPessoas = evento.QtdPessoas,
-                    ImagemURL = evento.ImagemURL,
-                    Telefone = evento.Telefone,
-                    Email = evento.Email,
-                });
                 
-                return Ok(eventosRetorno);                
+                return Ok(eventos);                
             }
             catch (Exception)
             {
