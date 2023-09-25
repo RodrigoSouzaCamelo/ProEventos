@@ -73,14 +73,13 @@ namespace ProEventos.Application.Services
             await _loteRepository.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteLote(int eventoId, int loteId)
+        public async Task<bool> DeleteLote(LoteDTO loteDTO)
         {
             try
             {
-                var lote = await _loteRepository.GetLoteByIdsAsync(eventoId, loteId) 
-                    ?? throw new Exception("Lote para delete não encontrado.");
+                var lote = _mapper.Map<Lote>(loteDTO);
 
-                _loteRepository.Add(lote);
+                _loteRepository.Delete(lote);
 
                 return await _loteRepository.SaveChangesAsync();
             }

@@ -7,7 +7,7 @@ namespace ProEventos.Application.Interfaces
     public interface ILoteService
     {
         Task<IEnumerable<LoteDTO>> SaveLotes(int eventoId, IEnumerable<LoteDTO> models);
-        Task<bool> DeleteLote(int eventoId, int loteId);
+        Task<bool> DeleteLote(LoteDTO lote);
 
         Task<IEnumerable<LoteDTO>> GetLotesByEventoIdAsync(int eventoId);
         Task<LoteDTO> GetLoteByIdsAsync(int eventoId, int loteId);

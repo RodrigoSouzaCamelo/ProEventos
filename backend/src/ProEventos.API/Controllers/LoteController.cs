@@ -59,7 +59,7 @@ namespace ProEventos.API.Controllers
             }
         }
 
-        [HttpDelete("{eventoId}/{loteId}")]
+        [HttpDelete("{loteId}/evento/{eventoId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
@@ -70,7 +70,7 @@ namespace ProEventos.API.Controllers
                 var lote = await _loteService.GetLoteByIdsAsync(eventoId, loteId);
                 if (lote == null) return NoContent();
 
-                return await _loteService.DeleteLote(lote.EventoId, lote.Id)
+                return await _loteService.DeleteLote(lote)
                        ? Ok(new { message = "Lote Deletado" })
                        : throw new Exception("Ocorreu um problem não específico ao tentar deletar Lote.");
             }

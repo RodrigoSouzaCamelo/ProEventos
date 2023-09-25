@@ -21,9 +21,9 @@ export class LoteService {
       .pipe(take(3));
   }
 
-  public delete(id: number): Observable<Lote> {
+  public delete(eventoId: number, loteId: number): Observable<Lote> {
     return this.http
-      .delete<Lote>(`${this.baseURL}/${id}`)
+      .delete<Lote>(`${this.baseURL}/${loteId}/evento/${eventoId}`)
       .pipe(take(3));
   }
 }
