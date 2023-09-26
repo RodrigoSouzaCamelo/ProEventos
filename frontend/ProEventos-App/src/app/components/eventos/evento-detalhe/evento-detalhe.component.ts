@@ -57,6 +57,16 @@ export class EventoDetalheComponent implements OnInit {
     }
   }
 
+  get bsConfigLote(): any {
+    return {
+      isAnimated: true,
+      adaptivePosition: true,
+      dateInputFormat: 'DD/MM/YYYY',
+      containerClass: 'theme-default',
+      showWeekNumbers: false
+    }
+  }
+
   ngOnInit(): void {
     this.validation();
     this.carregarEventos();
@@ -171,7 +181,6 @@ export class EventoDetalheComponent implements OnInit {
       this.loteService.put(this.evento.id, this.form.value.lotes).subscribe(
         () => {
           this.toastr.success('Lotes salvos com sucesso!', 'Sucesso!');
-          this.lotes.reset();
         },
         (error: any) => {
           this.toastr.error('Não foi possível salvar lotes.', 'Erro');
@@ -208,5 +217,9 @@ export class EventoDetalheComponent implements OnInit {
 
   decline(): void {
     this.modalRef?.hide();
+  }
+
+  public mudarValor(value: Date, indice: number) {
+    this.lotes.value[indice]['dataInicio'] = value;
   }
 }

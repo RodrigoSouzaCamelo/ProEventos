@@ -185,17 +185,23 @@
               <label>Data Início</label>
               <input
                 type="text"
+                bsDatepicker
                 class="form-control"
+                [bsConfig]="bsConfigLote"
                 placeholder="01/01/2019"
                 formControlName="dataInicio"
                 [ngClass]="cssValidator(lotes.get(i + '.dataInicio'))"
+                value="{{this.lotes.get(i + '.dataInicio')?.value | date: 'dd/MM/yyyy' }}"
+                (bsValueChange)="mudarValor($event, i)"
               >
             </div>
             <div class="form-group col-md-4">
               <label>Data Fim</label>
               <input
                 type="text"
+                bsDatepicker
                 class="form-control"
+                [bsConfig]="bsConfigLote"
                 placeholder="01/01/2019"
                 formControlName="dataFim"
                 [ngClass]="cssValidator(lotes.get(i + '.dataFim'))"
