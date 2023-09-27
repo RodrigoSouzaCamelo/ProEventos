@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.Application.DTOs;
 using ProEventos.Application.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,11 +15,13 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
-        private readonly IEventoService eventoService;
+        private readonly IEventoService _eventoService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EventoController(IEventoService context)
+        public EventoController(IEventoService context, IWebHostEnvironment webHostEnvironment)
         {
-            this.eventoService = context;
+            _eventoService = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -28,7 +32,7 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var eventos = await eventoService.GetAllEventosAsync();
+                var eventos = await _eventoService.GetAllEventosAsync();
                 
                 if(eventos == null) return NoContent();
                 
@@ -48,7 +52,7 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var evento = await eventoService.GetEventoByIdAsync(id);
+                var evento = await _eventoService.GetEventoByIdAsync(id);
                 
                 if(evento == null) return NoContent();
                 
@@ -68,7 +72,7 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var eventos = await eventoService.GetAllEventosByTemaAsync(tema);
+                var eventos = await _eventoService.GetAllEventosByTemaAsync(tema);
                 
                 if(eventos == null) return NoContent();
                 
@@ -87,13 +91,42 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                return Ok(await eventoService.Add(evento));                
+                return Ok(await _eventoService.Add(evento));                
             }
             catch (Exception)
             {
                 return StatusCode(500, "Erro ao tentar recuperar evento!");
             }
         }
+
+        [HttpPost("upload/image/{eventoId}")]
+        [ProducesResponseType(typeof(EventoDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UploadImage(int eventoId)
+        {
+            try
+            {
+                var evento = await _eventoService.GetEventoByIdAsync(eventoId, true);
+                
+                if(evento == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if(file.Length > 0)
+                {
+                    DeleteImage(evento.ImagemURL);
+                    //evento.ImageURL = SaveImage(file);
+                }
+
+                var retorno = await _eventoService.Update(evento);
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Erro ao tentar recuperar evento!");
+            }
+        }
+
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -103,7 +136,7 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var eventoAtualizado = await eventoService.Update(evento);
+                var eventoAtualizado = await _eventoService.Update(evento);
                 
                 if(eventoAtualizado == null) return NotFound("Evento não encontrado");
                 
@@ -123,11 +156,11 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var evento = await eventoService.GetEventoByIdAsync(id, true);
+                var evento = await _eventoService.GetEventoByIdAsync(id, true);
                 
                 if (evento == null) return NotFound();
                 
-                if(!await eventoService.Delete(evento)) return StatusCode(500);
+                if(!await _eventoService.Delete(evento)) return StatusCode(500);
                 
                 return NoContent();                
             }
@@ -135,6 +168,15 @@ namespace ProEventos.API.Controllers
             {
                 return StatusCode(500, "Erro ao tentar recuperar evento!");
             }
+        }
+
+        [NonAction]
+        private void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Images", imageName);
+            if(System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
         }
     }
 }
