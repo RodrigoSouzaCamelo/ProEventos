@@ -222,4 +222,10 @@ export class EventoDetalheComponent implements OnInit {
   public mudarValor(value: Date, indice: number) {
     this.lotes.value[indice]['dataInicio'] = value;
   }
+
+  public trazerNomeDoLote(nomeLote: string | null) {
+    if(!nomeLote || nomeLote === '') return 'Nome do Lote';
+
+    return nomeLote;
+  }
 }

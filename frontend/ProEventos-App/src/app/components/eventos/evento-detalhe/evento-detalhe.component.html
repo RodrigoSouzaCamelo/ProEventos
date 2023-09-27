@@ -138,6 +138,7 @@
         <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i = index;">
           <fieldset [formGroupName]="i" class="form-group">
             <legend class="d-flex justify-content-between capitalize">
+              {{ trazerNomeDoLote(lotes.get(i + '.nome')?.value) }}
               <button
                 (click)="removerLote(template, i)"
                 class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
@@ -222,7 +223,7 @@
     <button class="btn btn-outline-secondary mr-auto border">
       Cancelar Alteração
     </button>
-    <button (click)="salvarLotes()" class="btn btn-success">
+    <button [disabled]="!form.controls.lotes.valid" (click)="salvarLotes()" class="btn btn-success">
       Salvar Lotes
     </button>
   </div>
