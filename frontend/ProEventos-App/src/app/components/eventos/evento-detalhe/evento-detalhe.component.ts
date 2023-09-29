@@ -22,6 +22,8 @@ export class EventoDetalheComponent implements OnInit {
   public evento = {} as Evento;
   public loteSelecionado = {} as Lote;
   public indiceLoteSelecionado = 0;
+  public imagemURL = 'assets/img/upload.png'
+  public file: any | File;
 
   constructor(private fb: FormBuilder,
     private localeService: BsLocaleService,
@@ -227,5 +229,14 @@ export class EventoDetalheComponent implements OnInit {
     if(!nomeLote || nomeLote === '') return 'Nome do Lote';
 
     return nomeLote;
+  }
+
+  public onFileChange(event: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => this.imagemURL = e.target.result;
+
+    this.file = event.target.files;
+    reader.readAsDataURL(this.file[0]);
   }
 }
