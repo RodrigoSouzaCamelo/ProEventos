@@ -28,6 +28,7 @@ namespace ProEventos.Persistence.Repositories
             }
 
             return await query
+                .AsNoTracking()
                 .OrderBy(e => e.Tema)
                 .Where(e => e.Id == id)
                 .FirstOrDefaultAsync();
