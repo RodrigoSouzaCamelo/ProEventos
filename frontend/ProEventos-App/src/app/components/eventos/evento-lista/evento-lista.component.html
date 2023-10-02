@@ -45,7 +45,7 @@
             [collapse]="ocultarImagens"
             [style.width.px]="larguraImagem"
             [style.margin.px]="marginImagem"
-            src="/assets/{{evento.imagemURL}}"
+            [src]="mostrarImagem(evento.imagemURL)"
           >
         </td>
         <td>{{evento.tema}}</td>
