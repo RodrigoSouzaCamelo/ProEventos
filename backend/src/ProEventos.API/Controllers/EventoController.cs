@@ -159,8 +159,10 @@ namespace ProEventos.API.Controllers
                 var evento = await _eventoService.GetEventoByIdAsync(id, true);
                 
                 if (evento == null) return NotFound();
-                
-                if(!await _eventoService.Delete(evento)) return StatusCode(500);
+
+                DeleteImage(evento.ImagemURL);
+
+                if (!await _eventoService.Delete(evento)) return StatusCode(500);
                 
                 return NoContent();                
             }
