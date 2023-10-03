@@ -84,7 +84,7 @@ export class EventoDetalheComponent implements OnInit {
           this.evento = {...evento};
           this.form.patchValue(this.evento);
 
-          if(this.evento.imagemURL !== '') {
+          if(this.evento.imagemURL) {
             this.imagemURL = environment.apiUrl  + '/resources/images/' + this.evento.imagemURL;
           }
 
