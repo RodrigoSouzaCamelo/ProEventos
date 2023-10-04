@@ -25,7 +25,7 @@ namespace ProEventos.Persistence.Repositories
                     .ThenInclude(pe => pe.Evento);
             }
 
-            query = query.OrderBy(p => p.Nome)
+            query = query.OrderBy(p => p.User.PrimeiroNome)
                 .Where(p => p.Id == id);
 
             return await query.FirstOrDefaultAsync();
@@ -42,7 +42,7 @@ namespace ProEventos.Persistence.Repositories
             }
 
             return await query
-                .OrderBy(p => p.Nome)
+                .OrderBy(p => p.User.PrimeiroNome)
                 .ToListAsync();
         }
 
@@ -57,8 +57,8 @@ namespace ProEventos.Persistence.Repositories
             }
 
             return await query
-                .OrderBy(p => p.Nome)
-                .Where(p => p.Nome.ToLower().Contains(nome.ToLower()))
+                .OrderBy(p => p.User.PrimeiroNome)
+                .Where(p => p.User.PrimeiroNome.ToLower().Contains(nome.ToLower()))
                 .ToListAsync();
         }
 
