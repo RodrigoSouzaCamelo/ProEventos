@@ -12,6 +12,6 @@ namespace ProEventos.Domain.Identity
         public string Descricao { get; set; }
         public Funcao Funcao { get; set; }
         public string ImagemURL { get; set; }
-        public List<Role> UserRoles { get; set; }
+        public List<UserRole> UserRoles { get; set; }
     }
 }
