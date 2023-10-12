@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ProEventos.Application.Interfaces
 {
-    internal interface IAccountService
+    public interface IAccountService
     {
         Task<bool> UserExists(string username);
         Task<UserUpdateDTO> GetUserByUserNameAsync(string username);
