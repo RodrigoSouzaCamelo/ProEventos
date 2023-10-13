@@ -55,5 +55,29 @@ namespace ProEventos.API.Controllers
                 return StatusCode(500, $"Erro ao tentar recuperar evento! Erro: {ex.Message}");
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginDTO)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(userLoginDTO.UserName);
+                if (user == null) return Unauthorized("Usuário ou senha está incoreto.");
+
+                var result = await _accountService.CheckUserPasswordAsync(user, userLoginDTO.Password);
+
+                return Ok(new
+                {
+                    user.UserName,
+                    user.PrimeiroNome,
+                    Token = await _tokenService.CreateToken(user)
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao tentar recuperar evento! Erro: {ex.Message}");
+            }
+        }
     }
 }

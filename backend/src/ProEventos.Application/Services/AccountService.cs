@@ -27,12 +27,11 @@ namespace ProEventos.Application.Services
             _mapper = mapper;
             _userRepository = userRepository;
         }
-        public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDTO userUpdateDto, string password)
+        public async Task<SignInResult> CheckUserPasswordAsync(UserUpdateDTO userUpdateDTO, string password)
         {
             try
             {
-                var user = await _userManager.Users
-                                             .SingleOrDefaultAsync(user => user.UserName == userUpdateDto.UserName.ToLower());
+                var user = await _userManager.Users.SingleOrDefaultAsync(user => user.UserName == userUpdateDTO.UserName.ToLower());
 
                 return await _signInManager.CheckPasswordSignInAsync(user, password, false);
             }
