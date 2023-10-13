@@ -110,6 +110,7 @@ namespace ProEventos.API
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseStaticFiles(new StaticFileOptions
             {

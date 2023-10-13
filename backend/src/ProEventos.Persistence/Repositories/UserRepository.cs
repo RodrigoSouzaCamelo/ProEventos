@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain.Identity;
 using ProEventos.Domain.Interfaces.Repositories;
+using ProEventos.Persistence.Contexts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace ProEventos.Persistence.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        protected UserRepository(DbContext context) : base(context) {}
+        public UserRepository(ProEventosContext context) : base(context) {}
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
             => await _context.Set<User>().ToListAsync();
