@@ -82,5 +82,26 @@ namespace ProEventos.API.Controllers
                 return StatusCode(500, $"Erro ao tentar recuperar evento! Erro: {ex.Message}");
             }
         }
+
+        [HttpPut("user")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+                if (user == null) return Unauthorized("Usuário inválido.");
+
+                userUpdateDTO.Id = user.Id;
+
+                var result = await _accountService.UpdateAccount(userUpdateDTO);
+                if (result == null) return NoContent();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao tentar atualizar usuário! Erro: {ex.Message}");
+            }
+        }
     }
 }
