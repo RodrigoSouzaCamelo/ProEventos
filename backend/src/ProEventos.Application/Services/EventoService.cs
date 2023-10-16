@@ -5,6 +5,7 @@ using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProEventos.Application.Services
@@ -20,12 +21,12 @@ namespace ProEventos.Application.Services
             _eventoRepository = eventoRepository;
         }
 
-        public async Task<IEnumerable<EventoDTO>> GetAllEventosAsync(bool includeEventos = false)
+        public async Task<IEnumerable<EventoDTO>> GetAllEventosAsync(int userId, bool includeEventos = false)
         {
             try
             {
                 var result = await _eventoRepository
-                    .GetAllEventosAsync(includeEventos);
+                    .GetAllEventosAsync(userId, includeEventos);
 
                 return _mapper.Map<IEnumerable<EventoDTO>>(result);
             }
@@ -35,12 +36,12 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<IEnumerable<EventoDTO>> GetAllEventosByTemaAsync(string tema, bool includeEventos = false)
+        public async Task<IEnumerable<EventoDTO>> GetAllEventosByTemaAsync(int userId, string tema, bool includeEventos = false)
         {
             try
             {
                 var result = await _eventoRepository
-                    .GetAllEventosByTemaAsync(tema, includeEventos);
+                    .GetAllEventosByTemaAsync(userId, tema, includeEventos);
 
                 return _mapper.Map<IEnumerable<EventoDTO>>(result);
             }
@@ -50,12 +51,12 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<EventoDTO> GetEventoByIdAsync(int id, bool includeEventos = false)
+        public async Task<EventoDTO> GetEventoByIdAsync(int userId, int id, bool includeEventos = false)
         {
             try
             {
                 var result = await _eventoRepository
-                    .GetEventoByIdAsync(id, includeEventos);
+                    .GetEventoByIdAsync(userId, id, includeEventos);
 
                 return _mapper.Map<EventoDTO>(result);
             }
@@ -65,11 +66,12 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<EventoDTO> Add(EventoDTO eventoDTO)
+        public async Task<EventoDTO> Add(int userId, EventoDTO eventoDTO)
         {
             try
             {
                 var evento = _mapper.Map<Evento>(eventoDTO);
+                evento.UserId = userId;
                 _eventoRepository.Add(evento);
 
                 if(await _eventoRepository.SaveChangesAsync())
@@ -83,11 +85,12 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<EventoDTO> Update(EventoDTO eventoDTO)
+        public async Task<EventoDTO> Update(int userId, EventoDTO eventoDTO)
         {
             try
             {
                 var evento = _mapper.Map<Evento>(eventoDTO);
+                evento.UserId = userId;
                 _eventoRepository.Update(evento);
 
                 if(await _eventoRepository.SaveChangesAsync())
@@ -101,11 +104,12 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<bool> Delete(EventoDTO eventoDTO)
+        public async Task<bool> Delete(int userId, EventoDTO eventoDTO)
         {
             try
             {
                 var evento = _mapper.Map<Evento>(eventoDTO);
+                evento.UserId = userId;
                 _eventoRepository.Delete(evento);
                 return await _eventoRepository.SaveChangesAsync();
             }
@@ -115,11 +119,16 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<bool> DeleteRange(EventoDTO[] eventosDTO)
+        public async Task<bool> DeleteRange(int userId, EventoDTO[] eventosDTO)
         {
             try
             {
                 var eventos = _mapper.Map<Evento[]>(eventosDTO);
+                eventos = eventos.Select(e => {
+                    e.UserId = userId;
+                    return e;
+                }).ToArray();
+
                 _eventoRepository.DeleteRange(eventos);
                 return !await _eventoRepository.SaveChangesAsync();
             }

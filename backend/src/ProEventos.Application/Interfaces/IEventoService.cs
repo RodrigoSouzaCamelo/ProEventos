@@ -6,12 +6,12 @@ namespace ProEventos.Application.Interfaces
 {
     public interface IEventoService
     {
-        Task<EventoDTO> Add(EventoDTO evento);
-        Task<EventoDTO> Update(EventoDTO evento);
-        Task<bool> Delete(EventoDTO evento);
-        Task<bool> DeleteRange(EventoDTO[] entities);
-        Task<EventoDTO> GetEventoByIdAsync(int id, bool includeEventos = false);
-        Task<IEnumerable<EventoDTO>> GetAllEventosAsync(bool includeEventos = false);
-        Task<IEnumerable<EventoDTO>> GetAllEventosByTemaAsync(string tema, bool includeEventos = false);
+        Task<EventoDTO> Add(int userId, EventoDTO evento);
+        Task<EventoDTO> Update(int userId, EventoDTO evento);
+        Task<bool> Delete(int userId, EventoDTO evento);
+        Task<bool> DeleteRange(int userId, EventoDTO[] entities);
+        Task<EventoDTO> GetEventoByIdAsync(int userId, int id, bool includeEventos = false);
+        Task<IEnumerable<EventoDTO>> GetAllEventosAsync(int userId, bool includeEventos = false);
+        Task<IEnumerable<EventoDTO>> GetAllEventosByTemaAsync(int userId, string tema, bool includeEventos = false);
     }
 }

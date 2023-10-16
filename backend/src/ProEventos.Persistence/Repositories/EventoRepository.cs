@@ -1,11 +1,10 @@
-using System;
+using Microsoft.EntityFrameworkCore;
+using ProEventos.Domain.Interfaces.Repositories;
+using ProEventos.Domain.Models;
+using ProEventos.Persistence.Contexts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ProEventos.Domain.Models;
-using ProEventos.Domain.Interfaces.Repositories;
-using ProEventos.Persistence.Contexts;
 
 namespace ProEventos.Persistence.Repositories
 {
@@ -15,7 +14,7 @@ namespace ProEventos.Persistence.Repositories
         {
         }
 
-        public async Task<Evento> GetEventoByIdAsync(int id, bool includePalestrantes = false)
+        public async Task<Evento> GetEventoByIdAsync(int userId, int id, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
                 .Include(e => e.Lotes)
@@ -30,11 +29,11 @@ namespace ProEventos.Persistence.Repositories
             return await query
                 .AsNoTracking()
                 .OrderBy(e => e.Tema)
-                .Where(e => e.Id == id)
+                .Where(e => e.Id == id && e.UserId == userId)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Evento>> GetAllEventosAsync(bool includePalestrantes = false)
+        public async Task<IEnumerable<Evento>> GetAllEventosAsync(int userId, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
                 .Include(e => e.Lotes)
@@ -47,11 +46,12 @@ namespace ProEventos.Persistence.Repositories
             }
 
             return await query
+                .Where(e => e.UserId == userId)
                 .OrderBy(e => e.Tema)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Evento>> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false)
+        public async Task<IEnumerable<Evento>> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
                 .Include(e => e.Lotes)
@@ -65,7 +65,7 @@ namespace ProEventos.Persistence.Repositories
 
             return await query
                 .OrderBy(e => e.Tema)
-                .Where(e => e.Tema.ToLower().Contains(tema.ToLower()))
+                .Where(e => e.Tema.ToLower().Contains(tema.ToLower()) && e.UserId == userId)
                 .ToListAsync();
         }
     }
