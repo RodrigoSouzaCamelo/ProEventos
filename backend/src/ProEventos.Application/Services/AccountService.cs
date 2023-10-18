@@ -66,7 +66,7 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var user = await _userRepository.GetUserByNameAsync(userName);
+                var user = await _userRepository.GetByUserName(userName);
                 if (user == null) return null;
 
                 var userUpdateDto = _mapper.Map<UserUpdateDTO>(user);
@@ -82,7 +82,7 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var user = await _userRepository.GetUserByNameAsync(userUpdateDto.UserName);
+                var user = await _userRepository.GetByUserName(userUpdateDto.UserName);
                 if (user == null) return null;
 
                 userUpdateDto.Id = user.Id;
@@ -99,7 +99,7 @@ namespace ProEventos.Application.Services
 
                 if (await _userRepository.SaveChangesAsync())
                 {
-                    var userRetorno = await _userRepository.GetUserByNameAsync(user.UserName);
+                    var userRetorno = await _userRepository.GetByUserName(user.UserName);
 
                     return _mapper.Map<UserUpdateDTO>(userRetorno);
                 }

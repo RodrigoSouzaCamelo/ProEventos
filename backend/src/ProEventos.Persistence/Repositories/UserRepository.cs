@@ -18,8 +18,8 @@ namespace ProEventos.Persistence.Repositories
             => await _context.Set<User>()
                 .FirstOrDefaultAsync(u => u.Id == id);
 
-        public async Task<User> GetUserByNameAsync(string name)
+        public async Task<User> GetByUserName(string userName)
             => await _context.Set<User>()
-                .FirstOrDefaultAsync(u => u.PrimeiroNome == name);
+                .FirstOrDefaultAsync(u => u.UserName == userName);
     }
 }

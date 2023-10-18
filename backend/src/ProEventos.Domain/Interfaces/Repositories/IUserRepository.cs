@@ -8,6 +8,6 @@ namespace ProEventos.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByNameAsync(string name);
+        Task<User> GetByUserName(string name);
     }
 }

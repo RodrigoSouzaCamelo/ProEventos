@@ -69,6 +69,7 @@ namespace ProEventos.API.Controllers
                 if (user == null) return Unauthorized("Usuário ou senha está incoreto.");
 
                 var result = await _accountService.CheckUserPasswordAsync(user, userLoginDTO.Password);
+                if (!result.Succeeded) return Unauthorized();
 
                 return Ok(new
                 {
