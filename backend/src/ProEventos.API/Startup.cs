@@ -17,6 +17,7 @@ using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Persistence.Contexts;
 using ProEventos.Persistence.Repositories;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -57,7 +58,8 @@ namespace ProEventos.API
             .AddRoleManager<RoleManager<Role>>()
             .AddSignInManager<SignInManager<User>>()
             .AddRoleValidator<RoleValidator<Role>>()
-            .AddEntityFrameworkStores<ProEventosContext>();
+            .AddEntityFrameworkStores<ProEventosContext>()
+            .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -83,9 +85,37 @@ namespace ProEventos.API
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header usando Bearer.
+                                Entre com 'Bearer ' [espaço] então coloque seu token.
+                                Exemplo: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
             });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -109,8 +139,8 @@ namespace ProEventos.API
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseStaticFiles(new StaticFileOptions
             {
