@@ -26,6 +26,16 @@ export class AccountService {
       );
   }
 
+  public register(model: any): Observable<void> {
+    return this.http.post<User>(`${this.baseURL}/register`, model)
+      .pipe(
+        take(3),
+        map(user => {
+          if(user) this.setCurrentUser(user);
+        })
+      );
+  }
+
   public logout(): void {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);
