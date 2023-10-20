@@ -27,8 +27,8 @@
         <div class="form-group col-sm-6">
           <label>Último nome</label>
           <input type="text" class="form-control"
-          formControlName="segundoNome"
-          [ngClass]="{'is-invalid': f.segundoNome.errors && f.segundoNome.touched}"
+          formControlName="ultimoNome"
+          [ngClass]="{'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched}"
           placeholder="Insira o Último nome" />
           <div class="invalid-feedback">
             Último Nome é obrigatório.
@@ -51,8 +51,8 @@
       <div class="form-group">
         <label for="">Usuario:</label>
         <input class="form-control" type="text"
-        formControlName="usuario"
-        [ngClass]="{'is-invalid': f.usuario.errors && f.usuario.touched}"
+        formControlName="userName"
+        [ngClass]="{'is-invalid': f.userName.errors && f.userName.touched}"
         placeholder="Insira o nome de Usuário" />
         <div class="invalid-feedback">
           Usuário é obrigatório.

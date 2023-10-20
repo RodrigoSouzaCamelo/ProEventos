@@ -35,9 +35,9 @@ export class RegistrationComponent implements OnInit {
 
     this.form = this.fb.group({
       primeiroNome: ['', Validators.required],
-      segundoNome: ['', Validators.required],
+      ultimoNome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      usuario: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(4)]],
       confirmarPassword: ['', [Validators.required]]
     }, formOptions)
