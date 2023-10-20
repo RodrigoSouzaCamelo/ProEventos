@@ -9,7 +9,7 @@ import { map, take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountService {
-  private currentUserSource = new ReplaySubject<User | null>(1);
+  private currentUserSource = new ReplaySubject<User>(1);
   public currentUser$ = this.currentUserSource.asObservable();
 
   private baseURL = environment.apiUrl + '/api/account';
@@ -38,7 +38,7 @@ export class AccountService {
 
   public logout(): void {
     localStorage.removeItem('user');
-    this.currentUserSource.next(null);
+    this.currentUserSource.next(undefined);
     this.currentUserSource.complete();
   }
 
