@@ -28,7 +28,7 @@ export class RegistrationComponent implements OnInit {
     this.validation();
   }
 
-  private validation(): void {debugger;
+  private validation(): void {
     const formOptions: AbstractControlOptions = {
       validators: ValidatorField.MustMatch('password', 'confirmarPassword')
     };
