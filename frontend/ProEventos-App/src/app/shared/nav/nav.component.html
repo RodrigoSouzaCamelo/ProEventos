@@ -8,29 +8,36 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav" [collapse]="isCollapse" [isAnimated]="true">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="eventos/lista">Eventos</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="palestrantes">Palestrantes</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="contatos">Contatos</a>
-        </li>
+        <ng-container *ngIf="usuarioLogado">
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" routerLink="eventos/lista">Eventos</a>
+          </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" routerLink="palestrantes">Palestrantes</a>
+          </li>
+          <li class="nav-item" routerLinkActive="active">
+            <a class="nav-link" routerLink="contatos">Contatos</a>
+          </li>
+        </ng-container>
       </ul>
 
-      <ul class="navbar-nav">
+      <div *ngIf="!usuarioLogado" class="navbar-nav mr-3 d-xs-none d-none d-md-block">
+        <a class="btn btn-light mr-2 border" routerLink="/user/login">Entrar</a>
+        <a class="btn btn-warning" routerLink="/user/registration">Me cadastrar</a>
+      </div>
+
+      <ul *ngIf="usuarioLogado" class="navbar-nav">
         <li class="nav-item dropdown" dropdown>
           <a dropdownToggle class="nav-link dropdown-toggle" style="cursor:pointer;" id="navbarDropdownMenuLink" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Rodrigo
+            {{ usuario.primeiroNome | titlecase }}
           </a>
           <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" routerLink="user/perfil">
               Perfil
             </a>
             <div role="separator" class="divider"></div>
-            <a class="dropdown-item" routerLink="user/registration">
+            <a (click)="logout()" class="dropdown-item" style="cursor: pointer;">
               Sair
             </a>
           </div>
