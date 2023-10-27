@@ -10,9 +10,31 @@ import { EventoListaComponent } from './components/eventos/evento-lista/evento-l
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
-  { path: 'eventos', redirectTo: 'eventos/lista' },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'eventos', redirectTo: 'eventos/lista' },
+      {
+        path: 'eventos',
+        component: EventosComponent,
+        children: [
+          { path: 'detalhe/:id', component: EventoDetalheComponent },
+          { path: 'detalhe', component: EventoDetalheComponent },
+          { path: 'lista', component: EventoListaComponent },
+        ]
+      },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'palestrantes', component: PalestrantesComponent },
+      { path: 'user/perfil', component: PerfilComponent },
+      { path: 'contatos', component: ContatosComponent },
+      { path: 'contatos', component: ContatosComponent },
+    ]
+  },
   {
     path: 'user',
     component: UserComponent,
@@ -21,20 +43,6 @@ const routes: Routes = [
       { path: 'registration', component: RegistrationComponent }
     ]
   },
-  {
-    path: 'eventos',
-    component: EventosComponent,
-    children: [
-      { path: 'detalhe/:id', component: EventoDetalheComponent },
-      { path: 'detalhe', component: EventoDetalheComponent },
-      { path: 'lista', component: EventoListaComponent },
-    ]
-  },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'palestrantes', component: PalestrantesComponent },
-  { path: 'user/perfil', component: PerfilComponent },
-  { path: 'contatos', component: ContatosComponent },
-  { path: 'contatos', component: ContatosComponent },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
