@@ -23,7 +23,7 @@ export class PerfilComponent implements OnInit {
       this.id = this.route.snapshot.params.id;
 
       const formOptions: AbstractControlOptions = {
-        validators: ValidatorField.MustMatch('senha', 'confirmeSenha')
+        validators: ValidatorField.MustMatch('password', 'confirmePassword')
       };
 
       this.form = this.fb.group({
@@ -34,8 +34,8 @@ export class PerfilComponent implements OnInit {
         telefone: ['', [Validators.required]],
         descricao: ['', Validators.required],
         funcao: ['', Validators.required],
-        senha: ['', [Validators.minLength(6), Validators.nullValidator]],
-        confirmeSenha: ['', Validators.nullValidator]
+        password: ['', [Validators.minLength(4), Validators.nullValidator]],
+        confirmePassword: ['', Validators.nullValidator]
       }, formOptions);
     }
 
