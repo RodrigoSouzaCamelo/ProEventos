@@ -4,7 +4,6 @@ using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Domain.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,29 +20,23 @@ namespace ProEventos.Application.Services
             _eventoRepository = eventoRepository;
         }
 
-        public async Task<IEnumerable<EventoDTO>> GetAllEventosAsync(int userId, bool includeEventos = false)
+        public async Task<PageList<EventoDTO>> GetAllEventosAsync(int userId, PageParams pageParams, bool includeEventos = false)
         {
             try
             {
-                var result = await _eventoRepository
-                    .GetAllEventosAsync(userId, includeEventos);
+                var eventosPaginados = await _eventoRepository
+                    .GetAllEventosAsync(userId, pageParams, includeEventos);
 
-                return _mapper.Map<IEnumerable<EventoDTO>>(result);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+                var resultado = _mapper.Map<PageList<EventoDTO>>(eventosPaginados);
 
-        public async Task<IEnumerable<EventoDTO>> GetAllEventosByTemaAsync(int userId, string tema, bool includeEventos = false)
-        {
-            try
-            {
-                var result = await _eventoRepository
-                    .GetAllEventosByTemaAsync(userId, tema, includeEventos);
+                resultado.PageSize = eventosPaginados.PageSize;
+                resultado.CurrentPage = eventosPaginados.CurrentPage;
+                resultado.TotalPages = eventosPaginados.TotalPages;
+                resultado.PageSize = eventosPaginados.PageSize;
+                resultado.TotalCount = eventosPaginados.TotalCount;
 
-                return _mapper.Map<IEnumerable<EventoDTO>>(result);
+                return resultado;
+
             }
             catch (Exception ex)
             {

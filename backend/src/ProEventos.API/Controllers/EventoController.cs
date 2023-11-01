@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
+using ProEventos.API.Models;
 using ProEventos.Application.DTOs;
 using ProEventos.Application.Interfaces;
+using ProEventos.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,12 +32,12 @@ namespace ProEventos.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(typeof(IEnumerable<EventoDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get()
+        [ProducesResponseType(typeof(PageList<EventoDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get([FromQuery]PageParams pageParams)
         {
             try
             {
-                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId());
+                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), pageParams);
                 
                 if(eventos == null) return NoContent();
                 

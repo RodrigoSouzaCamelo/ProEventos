@@ -33,7 +33,7 @@ namespace ProEventos.Persistence.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Evento>> GetAllEventosAsync(int userId, bool includePalestrantes = false)
+        public async Task<PageList<Evento>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes = false)
         {
             IQueryable<Evento> query = _context.Set<Evento>()
                 .Include(e => e.Lotes)
@@ -45,28 +45,11 @@ namespace ProEventos.Persistence.Repositories
                     .ThenInclude(pe => pe.Palestrante);
             }
 
-            return await query
-                .Where(e => e.UserId == userId)
-                .OrderBy(e => e.Tema)
-                .ToListAsync();
-        }
+            query = query
+                .Where(e => e.Tema.ToLower().Contains(pageParams.Term.ToLower()) && e.UserId == userId)
+                .OrderBy(e => e.Tema);
 
-        public async Task<IEnumerable<Evento>> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        {
-            IQueryable<Evento> query = _context.Set<Evento>()
-                .Include(e => e.Lotes)
-                .Include(e => e.RedesSociais);
-
-            if(includePalestrantes) {
-                query = query
-                    .Include(e => e.PalestranteEventos)
-                    .ThenInclude(pe => pe.Palestrante);
-            }
-
-            return await query
-                .OrderBy(e => e.Tema)
-                .Where(e => e.Tema.ToLower().Contains(tema.ToLower()) && e.UserId == userId)
-                .ToListAsync();
+            return await PageList<Evento>.CreateAsync(query, pageParams.CurrentPage, pageParams.PageSize);
         }
     }
 }
