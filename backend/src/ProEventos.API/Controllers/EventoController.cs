@@ -40,6 +40,8 @@ namespace ProEventos.API.Controllers
                 var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(), pageParams);
                 
                 if(eventos == null) return NoContent();
+
+                Response.AddPagination(eventos);
                 
                 return Ok(eventos);                
             }
@@ -62,26 +64,6 @@ namespace ProEventos.API.Controllers
                 if(evento == null) return NoContent();
                 
                 return Ok(evento);                
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "Erro ao tentar recuperar evento!");
-            }
-        }
-
-        [HttpGet("tema/{tema}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(IEnumerable<EventoDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetByTema(string tema)
-        {
-            try
-            {
-                var eventos = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(), tema);
-                
-                if(eventos == null) return NoContent();
-                
-                return Ok(eventos);                
             }
             catch (Exception)
             {
