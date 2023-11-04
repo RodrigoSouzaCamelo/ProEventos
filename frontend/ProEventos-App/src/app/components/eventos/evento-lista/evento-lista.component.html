@@ -68,6 +68,21 @@
       </tr>
     </tfoot>
   </table>
+  <div class="d-flex justify-content-center">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalCount"
+      [(ngModel)]="pagination.currentPage"
+      [itemsPerPage]="pagination.pageSize"
+
+      pageBtnClass="btn"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;">
+
+    </pagination>
+  </div>
 </div>
 
 

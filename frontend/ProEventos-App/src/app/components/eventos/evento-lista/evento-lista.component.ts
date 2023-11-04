@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Lote } from '@app/models/Lote';
+import { PaginatedResult, Pagination } from '@app/models/Pagination';
 import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -17,6 +18,7 @@ export class EventoListaComponent implements OnInit {
   modalRef?: BsModalRef;
   public eventoId: number = 0;
   public eventos: Evento[] = [];
+  public pagination = {} as Pagination;
   public eventosFiltrados: Evento[] = [];
 
   public ocultarImagens: boolean = false;
@@ -40,11 +42,17 @@ export class EventoListaComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   public ngOnInit(): void {
+    this.pagination = {
+      currentPage: 1,
+      pageSize: 3,
+      totalCount: 1
+    } as Pagination;
+
     this.getEventos();
-    this.spinner.show();
   }
 
   public getPrimeiroLote(lotes: Lote[]): string {
@@ -61,11 +69,14 @@ export class EventoListaComponent implements OnInit {
   }
 
   public getEventos(): void {
-    this.eventoService.getEventos()
+    this.spinner.show();
+
+    this.eventoService.getEventos(this.pagination.currentPage, this.pagination.pageSize)
       .subscribe({
-        next: (eventos: Evento[]) => {
-          this.eventos = eventos;
-          this.eventosFiltrados = eventos;
+        next: (response: PaginatedResult<Evento[]>) => {
+          this.eventos = response.result;
+          this.eventosFiltrados = this.eventos;
+          this.pagination = response.pagination;
         },
         error: (error: any) => {
           this.spinner.hide();

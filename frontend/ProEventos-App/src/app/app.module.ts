@@ -34,6 +34,7 @@ import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { LoteService } from './services/lote.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -66,6 +67,7 @@ defineLocale('pt-br', ptBrLocale);
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
+    PaginationModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-bottom-right',
