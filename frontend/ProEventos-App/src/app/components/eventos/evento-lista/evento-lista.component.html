@@ -74,7 +74,7 @@
       [totalItems]="pagination.totalCount"
       [(ngModel)]="pagination.currentPage"
       [itemsPerPage]="pagination.pageSize"
-
+      (pageChanged)="pageChanged($event)"
       pageBtnClass="btn"
       previousText="&lsaquo;"
       nextText="&rsaquo;"
