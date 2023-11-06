@@ -11,20 +11,17 @@ import { Observable } from 'rxjs';
 })
 export class NavComponent implements OnInit {
 
-  constructor(private accountService: AccountService, private router: Router) {
+  constructor(public accountService: AccountService, private router: Router) {
     router.events.subscribe(val => {
       if(val instanceof NavigationEnd) {
-        this.accountService.currentUser$.subscribe(value => {
-            this.usuarioLogado = value !== null;
-            if(this.usuarioLogado) this.usuario = value;
-          })
+        const user = JSON.parse(localStorage.getItem('user') ?? '');
+
+        if(user) this.accountService.setCurrentUser(user);
       }
     });
   }
 
   isCollapse = true;
-  usuarioLogado = false;
-  usuario: User = {} as User;
 
   ngOnInit(): void {
   }

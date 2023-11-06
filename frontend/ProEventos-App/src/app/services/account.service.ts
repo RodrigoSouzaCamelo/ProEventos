@@ -51,13 +51,11 @@ export class AccountService {
     return this.http.put<UserUpdate>(`${this.baseURL}/user`, model)
       .pipe(
         take(3),
-        map((user: UserUpdate) => {
-          this.setCurrentUser(user);
-        })
+        map((user: UserUpdate) => this.setCurrentUser(user))
       )
   }
 
-  private setCurrentUser(user: User): void {
+  public setCurrentUser(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }

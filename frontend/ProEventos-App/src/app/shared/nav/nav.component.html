@@ -8,7 +8,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav" [collapse]="isCollapse" [isAnimated]="true">
       <ul class="navbar-nav mr-auto">
-        <ng-container *ngIf="usuarioLogado">
+        <ng-container *ngIf="(accountService.currentUser$ | async) !== null">
           <li class="nav-item" routerLinkActive="active">
             <a class="nav-link" routerLink="eventos/lista">Eventos</a>
           </li>
@@ -21,13 +21,13 @@
         </ng-container>
       </ul>
 
-      <div *ngIf="!usuarioLogado" class="navbar-nav mr-3 d-xs-none d-none d-md-block">
+      <div *ngIf="(accountService.currentUser$ | async) === null" class="navbar-nav mr-3 d-xs-none d-none d-md-block">
         <a class="btn btn-light mr-2 border" routerLink="/user/login">Entrar</a>
         <a class="btn btn-warning" routerLink="/user/registration">Me cadastrar</a>
       </div>
 
-      <ul *ngIf="usuarioLogado" class="navbar-nav">
-        <li class="nav-item dropdown" dropdown>
+      <ul *ngIf="(accountService.currentUser$ | async) !== null" class="navbar-nav">
+        <li class="nav-item dropdown" dropdown *ngIf="(accountService.currentUser$ | async) as usuario">
           <a dropdownToggle class="nav-link dropdown-toggle" style="cursor:pointer;" id="navbarDropdownMenuLink" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             {{ usuario.primeiroNome | titlecase }}
