@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Evento } from '../models/Evento';
 import { environment } from '@environments/environment';
-import { PaginatedResult } from '@app/models/Pagination';
+import { PaginatedResult, Pagination } from '@app/models/Pagination';
 
 @Injectable(
   // { providedIn: 'root' }
@@ -14,14 +14,19 @@ export class EventoService {
 
   constructor(private http: HttpClient) { }
 
-  public getEventos(page?: number, pageSize?: number): Observable<PaginatedResult<Evento[]>> {
+  public getEventos(pagination: Pagination, term?: string): Observable<PaginatedResult<Evento[]>> {
+    const { currentPage, pageSize,  } = pagination;
     const paginatedResult = new PaginatedResult<Evento[]>();
 
     let params = new HttpParams;
 
-    if(page != null && pageSize != null) {
-      params = params.append('currentPage', page.toString());
+    if(currentPage != null && pageSize != null) {
+      params = params.append('currentPage', currentPage.toString());
       params = params.append('pageSize', pageSize.toString());
+    }
+
+    if(term) {
+      params = params.append('term', term);
     }
 
     return this.http

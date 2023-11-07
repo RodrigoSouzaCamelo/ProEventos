@@ -6,6 +6,8 @@ import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { Evento } from 'src/app/models/Evento';
 import { EventoService } from 'src/app/services/evento.service';
 
@@ -19,22 +21,12 @@ export class EventoListaComponent implements OnInit {
   public eventoId: number = 0;
   public eventos: Evento[] = [];
   public pagination = {} as Pagination;
-  public eventosFiltrados: Evento[] = [];
 
   public ocultarImagens: boolean = false;
   public larguraImagem: number = 100;
   public marginImagem: number = 2;
 
-  private filtroListado: string = "";
-
-  public get filtroLista(): string {
-    return this.filtroListado;
-  }
-
-  public set filtroLista(value: string) {
-    this.filtroListado = value;
-    this.eventosFiltrados = this.filtroListado ? this.filtrarEventos(value) : this.eventos;
-  }
+  private termoBuscaChanged = new Subject<string>();
 
   constructor(
     private eventoService: EventoService,
@@ -59,9 +51,28 @@ export class EventoListaComponent implements OnInit {
     return lotes?.length > 0 ? lotes[0].nome : '';
   }
 
-  public filtrarEventos(filtro: string): Evento[] {
-    return this.eventos
-      .filter(evento => evento.tema.toLocaleLowerCase().includes(filtro.toLocaleLowerCase()))
+  public filtrarEventos(event?: any): void {
+
+    if(this.termoBuscaChanged.observers.length === 0) {
+      this.termoBuscaChanged.pipe(debounceTime(500)).subscribe(filtrarPor => {
+        this.spinner.show();
+        this.eventoService.getEventos(this.pagination, filtrarPor)
+        .subscribe({
+          next: (response: PaginatedResult<Evento[]>) => {
+            this.eventos = response.result;
+              this.pagination = response.pagination;
+            },
+            error: (error: any) => {
+              this.spinner.hide();
+              this.toastr.error("Não foi possível carregar os eventos.", "Erro!");
+              console.error(error);
+            },
+            complete: () => this.spinner.hide()
+          });
+        });
+    }
+
+    this.termoBuscaChanged.next(event.value);
   }
 
   public alterarExibicaoImagens() {
@@ -71,11 +82,10 @@ export class EventoListaComponent implements OnInit {
   public getEventos(): void {
     this.spinner.show();
 
-    this.eventoService.getEventos(this.pagination.currentPage, this.pagination.pageSize)
+    this.eventoService.getEventos(this.pagination)
       .subscribe({
         next: (response: PaginatedResult<Evento[]>) => {
           this.eventos = response.result;
-          this.eventosFiltrados = this.eventos;
           this.pagination = response.pagination;
         },
         error: (error: any) => {

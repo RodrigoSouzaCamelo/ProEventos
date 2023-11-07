@@ -46,7 +46,8 @@ namespace ProEventos.Persistence.Repositories
             }
 
             query = query
-                .Where(e => e.Tema.ToLower().Contains(pageParams.Term.ToLower()) && e.UserId == userId)
+                .Where(e => (e.Tema.ToLower().Contains(pageParams.Term.ToLower()) ||
+                             e.Local.ToLower().Contains(pageParams.Term.ToLower())) && e.UserId == userId)
                 .OrderBy(e => e.Tema);
 
             return await PageList<Evento>.CreateAsync(query, pageParams.CurrentPage, pageParams.PageSize);
