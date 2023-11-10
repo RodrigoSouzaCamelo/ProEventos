@@ -14,7 +14,7 @@ namespace ProEventos.Persistence.Repositories
         {
         }
 
-        public async Task<Palestrante> GetPalestranteByIdAsync(int id, bool includeEventos = false)
+        public async Task<Palestrante> GetPalestranteByUserIdAsync(int id, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _context.Set<Palestrante>()
                 .Include(p => p.User)
