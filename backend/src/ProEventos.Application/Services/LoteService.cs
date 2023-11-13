@@ -21,7 +21,7 @@ namespace ProEventos.Application.Services
             _loteRepository = lotePersist;
         }
 
-        public async Task AddLote(int eventoId, LoteDTO model)
+        private async Task AddLote(int eventoId, LoteDTO model)
         {
             try
             {
