@@ -34,7 +34,7 @@ namespace ProEventos.Persistence.Repositories
                 .ToListAsync();
         }
 
-        public async Task<RedeSocial> GetRedeSocialByEventoAsync(int eventoId, int id)
+        public async Task<RedeSocial> GetByEventoAsync(int eventoId, int id)
         {
             return await _context
                 .Set<RedeSocial>()
@@ -42,7 +42,7 @@ namespace ProEventos.Persistence.Repositories
                 .FirstOrDefaultAsync(rs => rs.EventoId == eventoId && rs.Id == id);
         }
 
-        public async Task<RedeSocial> GetRedeSocialByPalestranteAsync(int palestranteId, int id)
+        public async Task<RedeSocial> GetByPalestranteAsync(int palestranteId, int id)
         {
             return await _context
                 .Set<RedeSocial>()

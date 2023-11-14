@@ -5,9 +5,9 @@ namespace ProEventos.Domain.Interfaces.Repositories
 {
     public interface IRedeSocialRepository : IRepository<RedeSocial>
     {
-        Task<RedeSocial[]> GetAllRedeSocialByEventoAsync(int eventoId);
-        Task<RedeSocial> GetRedeSocialByEventoAsync(int eventoId, int id);
-        Task<RedeSocial[]> GetAllRedeSocialByPalestranteAsync(int palestranteId);
-        Task<RedeSocial> GetRedeSocialByPalestranteAsync(int palestranteId, int id);
+        Task<RedeSocial[]> GetAllByEventoIdAsync(int eventoId);
+        Task<RedeSocial> GetByEventoAsync(int eventoId, int id);
+        Task<RedeSocial[]> GetAllByPalestranteAsync(int palestranteId);
+        Task<RedeSocial> GetByPalestranteAsync(int palestranteId, int id);
     }
 }

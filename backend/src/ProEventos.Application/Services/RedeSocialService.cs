@@ -25,7 +25,7 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var redesSociais = await _redeSocialRepository.GetAllRedeSocialByEventoAsync(eventoId);
+                var redesSociais = await _redeSocialRepository.GetAllByEventoIdAsync(eventoId);
                 if (redesSociais == null) return null;
 
                 foreach (var model in models)
@@ -43,7 +43,7 @@ namespace ProEventos.Application.Services
                     }
                 }
 
-                var loteRetorno = await _redeSocialRepository.GetAllRedeSocialByEventoAsync(eventoId);
+                var loteRetorno = await _redeSocialRepository.GetAllByEventoIdAsync(eventoId);
 
                 return _mapper.Map<RedeSocialDTO[]>(loteRetorno);
             }
@@ -57,7 +57,7 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var redesSociais = await _redeSocialRepository.GetAllRedeSocialByPalestranteAsync(palestranteId);
+                var redesSociais = await _redeSocialRepository.GetAllByPalestranteAsync(palestranteId);
                 if (redesSociais == null) return null;
 
                 foreach (var model in models)
@@ -75,7 +75,7 @@ namespace ProEventos.Application.Services
                     }
                 }
 
-                var loteRetorno = await _redeSocialRepository.GetAllRedeSocialByPalestranteAsync(palestranteId);
+                var loteRetorno = await _redeSocialRepository.GetAllByPalestranteAsync(palestranteId);
 
                 return _mapper.Map<RedeSocialDTO[]>(loteRetorno);
             }
@@ -110,34 +110,96 @@ namespace ProEventos.Application.Services
             await _redeSocialRepository.SaveChangesAsync();
         }
 
-        public Task<bool> DeleteByEvento(int eventoId, int redeSocialId)
+        public async Task<bool> DeleteByEvento(int eventoId, int redeSocialId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var redeSocial = await _redeSocialRepository.GetByEventoAsync(eventoId, redeSocialId)
+                    ?? throw new Exception("Não foi possível encontrar rede social");
+                _redeSocialRepository.Delete(redeSocial);
+
+                return await _redeSocialRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<bool> DeleteByPalestrante(int palestranteId, int redeSocialId)
+        public async Task<bool> DeleteByPalestrante(int palestranteId, int redeSocialId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var redeSocial = await _redeSocialRepository.GetByPalestranteAsync(palestranteId, redeSocialId) 
+                    ?? throw new Exception("Não foi possível encontrar rede social");
+                _redeSocialRepository.Delete(redeSocial);
+
+                return await _redeSocialRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<RedeSocialDTO[]> GetAllByEventoIdAsync(int eventoId)
+        public async Task<RedeSocialDTO[]> GetAllByEventoIdAsync(int eventoId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var redesSociais = await _redeSocialRepository.GetAllByEventoIdAsync(eventoId);
+                if (redesSociais == null) return null;
+
+                return _mapper.Map<RedeSocialDTO[]>(redesSociais);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<RedeSocialDTO[]> GetAllByPalestranteIdAsync(int palestranteId)
+        public async Task<RedeSocialDTO[]> GetAllByPalestranteIdAsync(int palestranteId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var redesSociais = await _redeSocialRepository.GetAllByPalestranteAsync(palestranteId);
+                if (redesSociais == null) return null;
+
+                return _mapper.Map<RedeSocialDTO[]>(redesSociais);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<RedeSocialDTO> GetRedeSocialEventoByIdsAsync(int eventoId, int RedeSocialId)
+        public async Task<RedeSocialDTO> GetEventoByIdsAsync(int eventoId, int redeSocialId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var redeSocial = await _redeSocialRepository.GetByEventoAsync(eventoId, redeSocialId);
+                if (redeSocial == null) return null;
+
+                return _mapper.Map<RedeSocialDTO>(redeSocial);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<RedeSocialDTO> GetRedeSocialPalestranteByIdsAsync(int PalestranteId, int RedeSocialId)
+        public async Task<RedeSocialDTO> GetPalestranteByIdsAsync(int palestranteId, int redeSocialId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var redeSocial = await _redeSocialRepository.GetByPalestranteAsync(palestranteId, redeSocialId);
+                if (redeSocial == null) return null;
+
+                return _mapper.Map<RedeSocialDTO>(redeSocial);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
