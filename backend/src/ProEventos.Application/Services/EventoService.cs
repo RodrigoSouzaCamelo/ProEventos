@@ -44,12 +44,12 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<EventoDTO> GetEventoByIdAsync(int userId, int id, bool includeEventos = false)
+        public async Task<EventoDTO> GetEventoByIdAsync(int userId, int id, bool includePalestrantes = false)
         {
             try
             {
                 var result = await _eventoRepository
-                    .GetEventoByIdAsync(userId, id, includeEventos);
+                    .GetEventoByIdAsync(userId, id, includePalestrantes);
 
                 return _mapper.Map<EventoDTO>(result);
             }
