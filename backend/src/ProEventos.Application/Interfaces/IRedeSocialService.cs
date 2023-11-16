@@ -14,7 +14,7 @@ namespace ProEventos.Application.Interfaces
         Task<RedeSocialDTO[]> GetAllByEventoIdAsync(int eventoId);
         Task<RedeSocialDTO[]> GetAllByPalestranteIdAsync(int palestranteId);
 
-        Task<RedeSocialDTO> GetEventoByIdsAsync(int eventoId, int RedeSocialId);
-        Task<RedeSocialDTO> GetPalestranteByIdsAsync(int PalestranteId, int RedeSocialId);
+        Task<RedeSocialDTO> GetByEventoIdAsync(int eventoId, int RedeSocialId);
+        Task<RedeSocialDTO> GetByPalestranteIdAsync(int PalestranteId, int RedeSocialId);
     }
 }
