@@ -39,13 +39,13 @@ namespace ProEventos.Application.Services
                     else
                     {
                         model.EventoId = eventoId;
-                        await UpdateLote(redesSociais, model);
+                        await UpdateRedeSociais(redesSociais, model);
                     }
                 }
 
-                var loteRetorno = await _redeSocialRepository.GetAllByEventoIdAsync(eventoId);
+                var redeSociaisRetorno = await _redeSocialRepository.GetAllByEventoIdAsync(eventoId);
 
-                return _mapper.Map<RedeSocialDTO[]>(loteRetorno);
+                return _mapper.Map<RedeSocialDTO[]>(redeSociaisRetorno);
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var redesSociais = await _redeSocialRepository.GetAllByPalestranteAsync(palestranteId);
+                var redesSociais = await _redeSocialRepository.GetAllByPalestranteIdAsync(palestranteId);
                 if (redesSociais == null) return null;
 
                 foreach (var model in models)
@@ -71,13 +71,13 @@ namespace ProEventos.Application.Services
                     else
                     {
                         model.PalestranteId = palestranteId;
-                        await UpdateLote(redesSociais, model);
+                        await UpdateRedeSociais(redesSociais, model);
                     }
                 }
 
-                var loteRetorno = await _redeSocialRepository.GetAllByPalestranteAsync(palestranteId);
+                var palestranteRetorno = await _redeSocialRepository.GetAllByPalestranteIdAsync(palestranteId);
 
-                return _mapper.Map<RedeSocialDTO[]>(loteRetorno);
+                return _mapper.Map<RedeSocialDTO[]>(palestranteRetorno);
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        private async Task UpdateLote(IEnumerable<RedeSocial> redesSociais, RedeSocialDTO model)
+        private async Task UpdateRedeSociais(IEnumerable<RedeSocial> redesSociais, RedeSocialDTO model)
         {
             var redeSocial = redesSociais.FirstOrDefault(redeSocial => redeSocial.Id == model.Id);
             _mapper.Map(model, redeSocial);
@@ -161,7 +161,7 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var redesSociais = await _redeSocialRepository.GetAllByPalestranteAsync(palestranteId);
+                var redesSociais = await _redeSocialRepository.GetAllByPalestranteIdAsync(palestranteId);
                 if (redesSociais == null) return null;
 
                 return _mapper.Map<RedeSocialDTO[]>(redesSociais);

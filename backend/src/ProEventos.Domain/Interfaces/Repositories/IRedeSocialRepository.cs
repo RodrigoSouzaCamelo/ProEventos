@@ -7,7 +7,7 @@ namespace ProEventos.Domain.Interfaces.Repositories
     {
         Task<RedeSocial[]> GetAllByEventoIdAsync(int eventoId);
         Task<RedeSocial> GetByEventoAsync(int eventoId, int id);
-        Task<RedeSocial[]> GetAllByPalestranteAsync(int palestranteId);
+        Task<RedeSocial[]> GetAllByPalestranteIdAsync(int palestranteId);
         Task<RedeSocial> GetByPalestranteAsync(int palestranteId, int id);
     }
 }

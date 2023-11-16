@@ -16,22 +16,22 @@ namespace ProEventos.Persistence.Repositories
         {
         }
 
-        public async Task<List<RedeSocial>> GetAllRedeSocialByEventoAsync(int eventoId)
+        public async Task<RedeSocial[]> GetAllByEventoIdAsync(int eventoId)
         {
             return await _context
                 .Set<RedeSocial>()
                 .AsNoTracking()
                 .Where(rs => rs.EventoId == eventoId)
-                .ToListAsync();
+                .ToArrayAsync();
         }
 
-        public async Task<List<RedeSocial>> GetAllRedeSocialByPalestranteAsync(int palestranteId)
+        public async Task<RedeSocial[]> GetAllByPalestranteIdAsync(int palestranteId)
         {
             return await _context
                 .Set<RedeSocial>()
                 .AsNoTracking()
                 .Where(rs => rs.PalestranteId == palestranteId)
-                .ToListAsync();
+                .ToArrayAsync();
         }
 
         public async Task<RedeSocial> GetByEventoAsync(int eventoId, int id)
