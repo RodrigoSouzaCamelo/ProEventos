@@ -172,7 +172,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<RedeSocialDTO> GetEventoByIdsAsync(int eventoId, int redeSocialId)
+        public async Task<RedeSocialDTO> GetByEventoIdAsync(int eventoId, int redeSocialId)
         {
             try
             {
@@ -187,7 +187,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<RedeSocialDTO> GetPalestranteByIdsAsync(int palestranteId, int redeSocialId)
+        public async Task<RedeSocialDTO> GetByPalestranteIdAsync(int palestranteId, int redeSocialId)
         {
             try
             {
