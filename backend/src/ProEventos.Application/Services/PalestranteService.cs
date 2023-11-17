@@ -3,13 +3,12 @@ using ProEventos.Application.DTOs;
 using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Domain.Models;
-using ProEventos.Persistence.Repositories;
 using System;
 using System.Threading.Tasks;
 
 namespace ProEventos.Application.Services
 {
-    internal class PalestranteService : IPalestranteService
+    public class PalestranteService : IPalestranteService
     {
         private readonly IMapper _mapper;
         private readonly IPalestranteRepository _palestranteRepository;

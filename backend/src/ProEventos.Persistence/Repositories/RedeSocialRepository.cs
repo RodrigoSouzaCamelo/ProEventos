@@ -1,16 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using ProEventos.Domain.Interfaces.Repositories;
 using ProEventos.Domain.Models;
 using ProEventos.Persistence.Contexts;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProEventos.Persistence.Repositories
 {
-    internal class RedeSocialRepository : Repository<RedeSocial>, IRedeSocialRepository
+    public class RedeSocialRepository : Repository<RedeSocial>, IRedeSocialRepository
     {
         protected RedeSocialRepository(ProEventosContext context) : base(context)
         {

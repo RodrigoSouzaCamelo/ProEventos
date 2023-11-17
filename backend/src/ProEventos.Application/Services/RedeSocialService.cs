@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProEventos.Application.Services
 {
-    internal class RedeSocialService : IRedeSocialService
+    public class RedeSocialService : IRedeSocialService
     {
         private readonly IMapper _mapper;
         private readonly IRedeSocialRepository _redeSocialRepository;
