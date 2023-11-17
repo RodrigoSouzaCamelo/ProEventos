@@ -9,7 +9,7 @@ namespace ProEventos.Persistence.Repositories
 {
     public class RedeSocialRepository : Repository<RedeSocial>, IRedeSocialRepository
     {
-        protected RedeSocialRepository(ProEventosContext context) : base(context)
+        public RedeSocialRepository(ProEventosContext context) : base(context)
         {
         }
 
