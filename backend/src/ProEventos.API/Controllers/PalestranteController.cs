@@ -30,7 +30,7 @@ namespace ProEventos.API.Controllers
         {
             try
             {
-                var palestrantes = await _palestranteService.GetAllPalestrantesAsync(pageParams);
+                var palestrantes = await _palestranteService.GetAllPalestrantesAsync(pageParams, true);
 
                 if (palestrantes == null) return NoContent();
 

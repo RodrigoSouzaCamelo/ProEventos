@@ -40,10 +40,14 @@ namespace ProEventos.API
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPalestranteService, PalestranteService>();
+            services.AddScoped<IRedeSocialService, RedeSocialService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILoteRepository, LoteRepository>();
             services.AddScoped<IEventoRepository, EventoRepository>();
+            services.AddScoped<IPalestranteRepository, PalestranteRepository>();
+            services.AddScoped<IRedeSocialRepository, RedeSocialRepository>();
 
 
             services.AddIdentityCore<User>(options =>
