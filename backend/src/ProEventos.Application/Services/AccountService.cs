@@ -78,7 +78,7 @@ namespace ProEventos.Application.Services
             }
         }
 
-        public async Task<UserUpdateDTO> UpdateAccount(UserUpdateDTO userUpdateDto)
+        public async Task<UserUpdateDTO> Update(UserUpdateDTO userUpdateDto)
         {
             try
             {
