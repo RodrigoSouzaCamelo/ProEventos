@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
+using ProEventos.API.Helpers;
 using ProEventos.Application.DTOs;
 using ProEventos.Application.Interfaces;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ProEventos.API.Controllers
@@ -14,11 +15,15 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
+        private const string DESTINO = "Perfil";
+
+        private readonly IUtil _util;
         private readonly ITokenService _tokenService;
         private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService accountService, ITokenService tokenService)
+        public AccountController(IUtil util, ITokenService tokenService, IAccountService accountService)
         {
+            _util = util;
             _tokenService = tokenService;
             _accountService = accountService;
         }
@@ -101,7 +106,7 @@ namespace ProEventos.API.Controllers
 
                 userUpdateDTO.Id = user.Id;
 
-                var usuarioAtualizado = await _accountService.UpdateAccount(userUpdateDTO);
+                var usuarioAtualizado = await _accountService.Update(userUpdateDTO);
                 if (usuarioAtualizado == null) return NoContent();
 
                 return Ok(new
@@ -114,6 +119,34 @@ namespace ProEventos.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Erro ao tentar atualizar usuário! Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPost("upload-image")]
+        [ProducesResponseType(typeof(EventoDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+
+                if (user == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _util.DeleteImage(user.ImagemURL, DESTINO);
+                    user.ImagemURL = await _util.SaveImage(file, DESTINO);
+                }
+
+                var retorno = await _accountService.Update(user);
+
+                return Ok(retorno);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Erro ao tentar realizar upload da foto do usuário!");
             }
         }
     }

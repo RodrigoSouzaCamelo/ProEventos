@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.API.Extensions;
-using ProEventos.API.Models;
+using ProEventos.API.Helpers;
 using ProEventos.Application.DTOs;
 using ProEventos.Application.Interfaces;
 using ProEventos.Domain.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProEventos.API.Controllers
@@ -20,11 +17,15 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
+        private const string DESTINO = "Images";
+
+        private readonly IUtil _util;
         private readonly IEventoService _eventoService;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EventoController(IEventoService context, IWebHostEnvironment webHostEnvironment)
+        public EventoController(IUtil util, IEventoService context, IWebHostEnvironment webHostEnvironment)
         {
+            _util = util;
             _eventoService = context;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -100,8 +101,8 @@ namespace ProEventos.API.Controllers
                 var file = Request.Form.Files[0];
                 if(file.Length > 0)
                 {
-                    DeleteImage(evento.ImagemURL);
-                    evento.ImagemURL = await SaveImage(file);
+                    _util.DeleteImage(evento.ImagemURL, DESTINO);
+                    evento.ImagemURL = await _util.SaveImage(file, DESTINO);
                 }
 
                 var retorno = await _eventoService.Update(User.GetUserId(), evento);
@@ -113,7 +114,6 @@ namespace ProEventos.API.Controllers
                 return StatusCode(500, "Erro ao tentar recuperar evento!");
             }
         }
-
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -147,7 +147,7 @@ namespace ProEventos.API.Controllers
                 
                 if (evento == null) return NotFound();
 
-                DeleteImage(evento.ImagemURL);
+                _util.DeleteImage(evento.ImagemURL, DESTINO);
 
                 if (!await _eventoService.Delete(User.GetUserId(), evento)) return StatusCode(500);
                 
@@ -157,31 +157,6 @@ namespace ProEventos.API.Controllers
             {
                 return StatusCode(500, "Erro ao tentar recuperar evento!");
             }
-        }
-
-        [NonAction]
-        private async Task<string> SaveImage(IFormFile imageFile)
-        {
-            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray())
-                .Replace(' ', '-');
-            
-            imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
-            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Images", imageName);
-
-            using var fileStream = new FileStream(imagePath, FileMode.Create);
-            await imageFile.CopyToAsync(fileStream);
-
-            return imageName;
-        }
-
-        [NonAction]
-        private void DeleteImage(string imageName)
-        {
-            if(string.IsNullOrEmpty(imageName)) return;
-
-            var imagePath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Images", imageName);
-            if(System.IO.File.Exists(imagePath))
-                System.IO.File.Delete(imagePath);
         }
     }
 }
