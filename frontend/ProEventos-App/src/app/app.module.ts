@@ -35,6 +35,8 @@ import { RegistrationComponent } from './components/user/registration/registrati
 import { LoteService } from './services/lote.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -53,7 +55,8 @@ defineLocale('pt-br', ptBrLocale);
     EventoListaComponent,
     UserComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    PerfilDetalheComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ defineLocale('pt-br', ptBrLocale);
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
+    TabsModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-bottom-right',
