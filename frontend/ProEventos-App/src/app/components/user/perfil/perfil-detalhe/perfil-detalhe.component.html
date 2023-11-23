@@ -45,7 +45,7 @@
         type="text"
         formControlName="ultimoNome"
         class="form-control"
-        [ngClass]="{ 'is-invalid': f.ultimoNome.errors && f.utimoNome.touched }"
+        [ngClass]="{ 'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched }"
       />
       <div
         *ngIf="f.ultimoNome.errors && f.ultimoNome.touched"
