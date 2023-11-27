@@ -51,9 +51,9 @@ export class PalestranteService {
       .pipe(take(3));
   }
 
-  public post(palestrante: Palestrante): Observable<Palestrante> {
+  public post(): Observable<Palestrante> {
     return this.http
-      .post<Palestrante>(`${this.baseURL}`, palestrante)
+      .post<Palestrante>(`${this.baseURL}`, { } as Palestrante)
       .pipe(take(3));
   }
 

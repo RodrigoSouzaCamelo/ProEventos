@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ValidatorField } from '@app/helpers/ValidatorField';
 import { UserUpdate } from '@app/models/UserUpdate';
 import { AccountService } from '@app/services/account.service';
+import { PalestranteService } from '@app/services/palestrante.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -27,6 +28,7 @@ export class PerfilDetalheComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private accountService: AccountService,
+    private palestranteService: PalestranteService
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +91,16 @@ export class PerfilDetalheComponent implements OnInit {
     private atualizarUsuario(): void {
       this.userUpdate = { ...this.form.value };
       this.spinner.show();
+
+      if(this.f.funcao.value === 'Palestrante') {
+        this.palestranteService.post().subscribe(
+          () => this.toastr.success('Função palestrante ativada com sucesso.', 'Sucesso'),
+          (error) => {
+            console.error(error);
+            this.toastr.error('Erro', 'Não foi possível ativar a função palestrante.');
+          }
+        )
+      }
 
       this.accountService.updateUser(this.userUpdate)
         .subscribe(
