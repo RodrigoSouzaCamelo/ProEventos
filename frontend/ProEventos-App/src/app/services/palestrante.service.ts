@@ -40,6 +40,16 @@ export class PalestranteService {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination') ?? '');
           }
 
+          paginatedResult.result = paginatedResult.result.map(result => {
+
+            if(result.user.imagemURL)
+              result.user.imagemURL = environment.apiUrl +'/resources/perfil/'+ result.user.imagemURL;
+            else
+              result.user.imagemURL = './assets/img/perfil.png';
+
+            return result;
+          })
+
           return paginatedResult;
         })
       );
