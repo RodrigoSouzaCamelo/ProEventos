@@ -55,7 +55,7 @@ export class PalestranteService {
       );
   }
 
-  public getpalestrante(): Observable<Palestrante> {
+  public getPalestrante(): Observable<Palestrante> {
     return this.http
       .get<Palestrante>(`${this.baseURL}`)
       .pipe(take(3));

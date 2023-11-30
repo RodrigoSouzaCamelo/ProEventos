@@ -41,14 +41,17 @@ namespace ProEventos.Application.Services
         {
             try
             {
-                var palestrante = _mapper.Map<Palestrante>(palestranteDTO);
-                palestrante.UserId = userId;
+                var palestrante = await _palestranteRepository.GetPalestranteByUserIdAsync(userId, true);
+
+                palestranteDTO.Id = palestrante.Id;
+                palestranteDTO.UserId = palestrante.UserId;
+
+                _mapper.Map(palestranteDTO, palestrante);
                 _palestranteRepository.Update(palestrante);
 
                 if (!await _palestranteRepository.SaveChangesAsync()) return null;
-
-                var palestranteRetorno = await _palestranteRepository.GetPalestranteByUserIdAsync(userId);             
-                return _mapper.Map<PalestranteDTO>(palestranteRetorno);
+                
+                return _mapper.Map<PalestranteDTO>(palestrante);
             }
             catch (Exception ex)
             {
