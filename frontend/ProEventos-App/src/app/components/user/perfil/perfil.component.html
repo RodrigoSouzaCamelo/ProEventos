@@ -1,26 +1,32 @@
-<app-titulo [titulo]="'Perfil'" [iconClass]="'fa fa-address-card'"></app-titulo>
+<app-titulo [titulo]="'Perfil' + (ehPalestrante ? ' Palestrante' : '')" [iconClass]="'fa fa-address-card'"></app-titulo>
 <div class="card rounded shadow-sm">
   <div class="row p-3">
     <div class="col-lg-3 pt-1">
       <div class="card mb-3">
         <div class="card-header">
-          <input type="file" #file (change)="onFileChange($event)" style="display: none;">
+          <input
+            type="file"
+            #file
+            (change)="onFileChange($event)"
+            style="display: none"
+          />
         </div>
         <div class="d-flex align-self-center pt-3">
-            <img
-              [src]="this.imagemURL"
-              (click)="file.click()"
-              name="aboutme"
-              width="120"
-              height="120"
-              class="rounded-circle"
-              style="cursor: pointer;"
-            />
+          <img
+            [src]="this.imagemURL"
+            (click)="file.click()"
+            name="aboutme"
+            width="120"
+            height="120"
+            class="rounded-circle"
+            style="cursor: pointer"
+          />
         </div>
         <div class="card-body">
           <div class="h4 text-center mb-3">@{{ userUpdate.userName }}</div>
           <div class="h7 text-bold pb-1">
-            <b>Nome:</b> {{ userUpdate.primeiroNome }} {{ userUpdate.ultimoNome }}
+            <b>Nome:</b> {{ userUpdate.primeiroNome }}
+            {{ userUpdate.ultimoNome }}
           </div>
           <div class="h7">
             {{ userUpdate.descricao }}
@@ -35,7 +41,10 @@
               </div>
               <div class="col-6 text-center">
                 <div class="h5">1342</div>
-                <div class="h6 text-muted">Eventos como Participante</div>
+                <div class="h6 text-muted">
+                  Eventos como
+                  {{ ehPalestrante ? "palestrante" : "participante" }}
+                </div>
               </div>
             </div>
           </li>
@@ -51,7 +60,9 @@
             <span>Perfil</span>
           </ng-template>
 
-          <app-perfil-detalhe (changeFormValue)="setChangeUserForm($event)"></app-perfil-detalhe>
+          <app-perfil-detalhe
+            (changeFormValue)="setChangeUserForm($event)"
+          ></app-perfil-detalhe>
         </tab>
 
         <tab class="border border-top-0 p-3" *ngIf="ehPalestrante">
