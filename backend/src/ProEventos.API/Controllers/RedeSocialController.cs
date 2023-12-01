@@ -96,7 +96,7 @@ namespace ProEventos.API.Controllers
             }
         }
 
-        [HttpPut("palestrante/{eventoId}")]
+        [HttpPut("palestrante")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(RedeSocialDTO[]), StatusCodes.Status200OK)]
@@ -122,7 +122,7 @@ namespace ProEventos.API.Controllers
             }
         }
 
-        [HttpDelete("{redeSocialId}/evento/{eventoId}")]
+        [HttpDelete("evento/{eventoId}/{redeSocialId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
@@ -146,7 +146,7 @@ namespace ProEventos.API.Controllers
             }
         }
 
-        [HttpDelete("{redeSocialId}")]
+        [HttpDelete("palestrante/{redeSocialId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
