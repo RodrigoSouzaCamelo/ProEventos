@@ -20,7 +20,9 @@ export class EventoDetalheComponent implements OnInit {
 
   modalRef?: BsModalRef;
   public form: FormGroup;
-  public evento = {} as Evento;
+  public evento = {
+    id: parseInt(this.activatedRoute.snapshot.paramMap.get('id') ?? '0')
+  } as Evento;
   public loteSelecionado = {} as Lote;
   public indiceLoteSelecionado = 0;
   public imagemURL = 'assets/img/upload.png'
