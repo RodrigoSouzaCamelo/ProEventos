@@ -71,7 +71,7 @@ export class RedesSociaisComponent implements OnInit {
     return this.fb.group({
       id: [redeSocial.id],
       nome: [redeSocial.nome, Validators.required],
-      url: [redeSocial.URL, Validators.required]
+      url: [redeSocial.url, Validators.required]
     });
   }
 
