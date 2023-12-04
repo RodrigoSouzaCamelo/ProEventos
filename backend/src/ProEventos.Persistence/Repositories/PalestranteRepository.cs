@@ -25,7 +25,9 @@ namespace ProEventos.Persistence.Repositories
                     .ThenInclude(pe => pe.Evento);
             }
 
-            query = query.OrderBy(p => p.User.PrimeiroNome)
+            query = query
+                .AsNoTracking()
+                .OrderBy(p => p.User.PrimeiroNome)
                 .Where(p => p.User.Id == id);
 
             return await query.FirstOrDefaultAsync();
